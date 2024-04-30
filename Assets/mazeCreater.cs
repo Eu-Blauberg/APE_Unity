@@ -4,30 +4,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
+using UnityEditor.SceneManagement;
 using UnityEditor.UIElements;
 using UnityEditor.VersionControl;
 using UnityEngine;
 
 public class mazeCreater : MonoBehaviour
 {   
-    private int mazeSize = 21;
+    [SerializeField]
+    GameObject WallBlock;
+    [SerializeField]
+    GameObject FloorBlock;
+    private int mazeSize = 51;
     private int mazeStagnationStepsLimit = 4;
+    private int RouteScale = 3;
+
+    static byte[][] MazeMap;
+    int initial_y;
+    int initial_x;
 
     // Start is called before the first frame update
     void Start()
     {
         //全体のマップをバイナリで保存するための二次元配列
-        int[][] mazeMap = new int[mazeSize][];
+        byte[][] mazeMap = new byte[mazeSize][];
         //一行分の0詰めされた配列
-        int[] mazeMapEachLen = Enumerable.Repeat(0,mazeSize).ToArray();
+        byte[] mazeMapEachLen = Enumerable.Repeat<byte>(0,mazeSize).ToArray();
         //大きさがmazeSizeの正方行列を作成
-        for (int i = 0; i < mazeSize; i++) mazeMap[i] = mazeMapEachLen.Clone() as int[];
+        for (int i = 0; i < mazeSize; i++) mazeMap[i] = mazeMapEachLen.Clone() as byte[];
         //仮想的なバイナリマップを取得
-        int[][] MazeFullyBinaryMap = ReturnVirtualBinaryMap(mazeMap);
+        byte[][] MazeFullyBinaryMap = ReturnVirtualBinaryMap(mazeMap);
         //実際に3D空間にブロックを配置する
         Fix3DMaze(MazeFullyBinaryMap);
+        Debug.Log(initial_y);
+        Debug.Log(initial_x);
 
-        Debug.Log("処理完了");
+        GameObject maincharacter = (GameObject)Resources.Load("Character");
+        GameObject instantedMainCharacter = Instantiate(maincharacter);
+        instantedMainCharacter.transform.position = new Vector3(initial_y*RouteScale,1*RouteScale,initial_x*RouteScale);
+
     }
 
     // Update is called once per frame
@@ -38,21 +53,24 @@ public class mazeCreater : MonoBehaviour
     //マップを配列によってバイナリで生成します
     // 1 : 道
     // 0 : 壁
-    private int[][] ReturnVirtualBinaryMap(int[][] mazeEmptyMap){
+    private byte[][] ReturnVirtualBinaryMap(byte[][] mazeEmptyMap){
 
+        int LoopMakerKey = 5;
+        int MakeLoopingPointTimes = 0;
         int RouteAchiveTimes = 0;
         int RouteTryTimes = 0;
-        int RouteStagnationTimes = 0;
-        int direction = 0;
+        int RouteStagnationTimes;
+        int direction;
         int[] Passed_xy = new int[2];
+        int[] LoopingCandicate_xy = new int[2];
 
         //初期位置の決定と代入
         int[] initial_xy = Return_xy();
-        int initial_y = initial_xy[0];
-        int initial_x = initial_xy[1];
+        initial_y = initial_xy[0];
+        initial_x = initial_xy[1];
 
         // 引数のMAPをこの関数内で保持するためのコピーを生成
-        int[][] mazeBinaryMap = mazeEmptyMap.Clone() as int[][];
+        byte[][] mazeBinaryMap = mazeEmptyMap.Clone() as byte[][];
 
         // 初期位置を決定
         mazeBinaryMap[initial_y][initial_x] = 1;
@@ -61,9 +79,8 @@ public class mazeCreater : MonoBehaviour
         int digingYcell = initial_y;
         int digingXcell = initial_x;
 
-        while(RouteAchiveTimes < mazeSize*mazeSize){
+        while(RouteAchiveTimes < mazeSize*mazeSize*5){
             RouteTryTimes++;
-            ShowBinaryMap(mazeBinaryMap);
             direction = GiveSmallerThanMaxValue(4);
 
             RouteStagnationTimes = RouteTryTimes - RouteAchiveTimes;
@@ -115,6 +132,17 @@ public class mazeCreater : MonoBehaviour
                 break;
             }
         }
+
+
+        while(mazeSize/LoopMakerKey > MakeLoopingPointTimes){
+            LoopingCandicate_xy = Return_xy();
+            digingYcell = LoopingCandicate_xy[0];
+            digingXcell = LoopingCandicate_xy[1];
+            if(mazeBinaryMap[digingYcell][digingXcell]!=0) continue;
+            mazeBinaryMap[digingYcell][digingXcell] = 1;
+            MakeLoopingPointTimes++;
+        }
+
         return mazeBinaryMap;
     }
 
@@ -154,17 +182,23 @@ public class mazeCreater : MonoBehaviour
         }Debug.Log(message);
     }
 
-    private void Fix3DMaze(int[][] mazeFullyBinaryMap){
+    private void Fix3DMaze(byte[][] mazeFullyBinaryMap){
         GameObject wall;
-        GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        floor.transform.position = new Vector3((mazeSize-1)/2, 0, (mazeSize-1)/2);
-        floor.transform.localScale = new Vector3(mazeSize,1,mazeSize);
+        GameObject floor;
+        GameObject wallPrefab = (GameObject)Resources.Load("WallCube");
+        GameObject FloorPrefab = (GameObject)Resources.Load("FloorCube");
+        floor = Instantiate(FloorPrefab);
+        floor.transform.position = new Vector3((mazeSize-1)*RouteScale/2, 0, (mazeSize-1)*RouteScale/2);
+        floor.transform.localScale = new Vector3(mazeSize*RouteScale,1*RouteScale,mazeSize*RouteScale);
+        floor.transform.parent = FloorBlock.transform;
 
         for(int m = 0; m < mazeSize; m++){
             for(int n = 0; n < mazeSize; n++){
                 if(mazeFullyBinaryMap[m][n] == 1) continue;
-                wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                wall.transform.position = new Vector3(m, 1, n);
+                wall = Instantiate(wallPrefab);
+                wall.transform.position = new Vector3(m*RouteScale, 1*RouteScale, n*RouteScale);
+                wall.transform.localScale = new Vector3(RouteScale,RouteScale,RouteScale);
+                wall.transform.parent = WallBlock.transform;
             }
         }
     }
