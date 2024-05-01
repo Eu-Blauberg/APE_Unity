@@ -7,9 +7,6 @@ public class characterGenerate : MonoBehaviour
     [SerializeField]
     GameObject MainCharacter;
 
-    public characterGenerate(int x, int y, int z){
-        MainCharacter.transform.position = new Vector3(x,y,z);
-    }
     // Start is called before the first frame update    
     void Start()
     {

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEditor.SceneManagement;
 using UnityEditor.UIElements;
@@ -15,13 +16,16 @@ public class mazeCreater : MonoBehaviour
     GameObject WallBlock;
     [SerializeField]
     GameObject FloorBlock;
-    private int mazeSize = 51;
+    private int mazeSize = 21;
     private int mazeStagnationStepsLimit = 4;
     private int RouteScale = 3;
 
     static byte[][] MazeMap;
     int initial_y;
     int initial_x;
+
+    int goal_y;
+    int goal_x;
 
     // Start is called before the first frame update
     void Start()
@@ -64,10 +68,19 @@ public class mazeCreater : MonoBehaviour
         int[] Passed_xy = new int[2];
         int[] LoopingCandicate_xy = new int[2];
 
-        //初期位置の決定と代入
+        // 初期位置の決定と代入
         int[] initial_xy = Return_xy();
         initial_y = initial_xy[0];
         initial_x = initial_xy[1];
+
+        // ゴール地点の決定と導入
+        while(true){
+            int[] Goal_xy = Return_xy();
+            if(initial_x == goal_x || initial_y == goal_y) continue;
+            goal_y = Goal_xy[0];
+            goal_x = Goal_xy[1];
+            break;
+        }
 
         // 引数のMAPをこの関数内で保持するためのコピーを生成
         byte[][] mazeBinaryMap = mazeEmptyMap.Clone() as byte[][];
@@ -143,6 +156,13 @@ public class mazeCreater : MonoBehaviour
             MakeLoopingPointTimes++;
         }
 
+        // ゴール地点を生成
+        for(int i = -1; i < 2; i++){
+            for(int j = -1; j < 2; j++){
+                mazeBinaryMap[goal_y+i][goal_x+j] = 1;
+            }
+        }
+        
         return mazeBinaryMap;
     }
 
@@ -155,10 +175,10 @@ public class mazeCreater : MonoBehaviour
         int initial_y = GiveSmallerThanMaxValue(mazeSize);
 
         //初期位置について，例外を解決
-        if(initial_x == 0) initial_x += 1;
-        if(initial_x == mazeSize-1) initial_x -= 1;
-        if(initial_y == 0) initial_y += 1;
-        if(initial_y == mazeSize-1) initial_y -= 1;
+        if(initial_x <= 2) initial_x += 2;
+        if(initial_x >= mazeSize-2) initial_x -= 2;
+        if(initial_y <= 2) initial_y += 2;
+        if(initial_y >= mazeSize-2) initial_y -= 2;
 
         initial_xy[0] = initial_y;
         initial_xy[1] = initial_x;
@@ -187,18 +207,22 @@ public class mazeCreater : MonoBehaviour
         GameObject floor;
         GameObject wallPrefab = (GameObject)Resources.Load("WallCube");
         GameObject FloorPrefab = (GameObject)Resources.Load("FloorCube");
-        floor = Instantiate(FloorPrefab);
-        floor.transform.position = new Vector3((mazeSize-1)*RouteScale/2, 0, (mazeSize-1)*RouteScale/2);
-        floor.transform.localScale = new Vector3(mazeSize*RouteScale,1*RouteScale,mazeSize*RouteScale);
-        floor.transform.parent = FloorBlock.transform;
 
         for(int m = 0; m < mazeSize; m++){
             for(int n = 0; n < mazeSize; n++){
-                if(mazeFullyBinaryMap[m][n] == 1) continue;
-                wall = Instantiate(wallPrefab);
-                wall.transform.position = new Vector3(m*RouteScale, 1*RouteScale, n*RouteScale);
-                wall.transform.localScale = new Vector3(RouteScale,RouteScale,RouteScale);
-                wall.transform.parent = WallBlock.transform;
+                if(m == goal_y && n == goal_x) continue;
+                if(mazeFullyBinaryMap[m][n] == 0){
+                    wall = Instantiate(wallPrefab);
+                    wall.transform.position = new Vector3(m*RouteScale, 1*RouteScale, n*RouteScale);
+                    wall.transform.localScale = new Vector3(RouteScale,RouteScale,RouteScale);
+                    wall.transform.parent = WallBlock.transform;
+                }
+                else{
+                    floor = Instantiate(FloorPrefab);
+                    floor.transform.position = new Vector3(m*RouteScale, 0, n*RouteScale);
+                    floor.transform.localScale = new Vector3(RouteScale,RouteScale,RouteScale);
+                    floor.transform.parent = FloorBlock.transform;
+                }
             }
         }
     }
