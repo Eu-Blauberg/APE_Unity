@@ -208,6 +208,7 @@ public class mazeCreater : MonoBehaviour
         GameObject wallPrefab = (GameObject)Resources.Load("WallCube");
         GameObject FloorPrefab = (GameObject)Resources.Load("FloorCube");
 
+        //床・穴・壁を生成する
         for(int m = 0; m < mazeSize; m++){
             for(int n = 0; n < mazeSize; n++){
                 if(m == goal_y && n == goal_x) continue;
