@@ -16,9 +16,11 @@ public class mazeCreater : MonoBehaviour
     GameObject WallBlock;
     [SerializeField]
     GameObject FloorBlock;
+    [SerializeField]
+    GameObject StairBlock;
     private int mazeSize = 21;
     private int mazeStagnationStepsLimit = 4;
-    private int RouteScale = 3;
+    private float RouteScale = 3;
 
     static byte[][] MazeMap;
     int initial_y;
@@ -40,8 +42,8 @@ public class mazeCreater : MonoBehaviour
         byte[][] MazeFullyBinaryMap = ReturnVirtualBinaryMap(mazeMap);
         //実際に3D空間にブロックを配置する
         Fix3DMaze(MazeFullyBinaryMap);
-        Debug.Log(initial_y);
-        Debug.Log(initial_x);
+        //Debug.Log(initial_y);
+        //Debug.Log(initial_x);
 
         GameObject maincharacter = (GameObject)Resources.Load("Character");
         GameObject instantedMainCharacter = Instantiate(maincharacter);
@@ -146,7 +148,7 @@ public class mazeCreater : MonoBehaviour
             }
         }
 
-
+        // 迷路にループ構造を生成
         while(mazeSize/LoopMakerKey > MakeLoopingPointTimes){
             LoopingCandicate_xy = Return_xy();
             digingYcell = LoopingCandicate_xy[0];
@@ -188,7 +190,6 @@ public class mazeCreater : MonoBehaviour
     private int GiveSmallerThanMaxValue(int maxValue){
         System.Random r = new();
         int RandomValue = r.Next(maxValue);
-        //Debug.Log(R.ToString());
         return RandomValue;
     }
 
@@ -205,19 +206,30 @@ public class mazeCreater : MonoBehaviour
     private void Fix3DMaze(byte[][] mazeFullyBinaryMap){
         GameObject wall;
         GameObject floor;
+        GameObject Stair;
+        GameObject StairPrefab = (GameObject)Resources.Load("BelowStair");
         GameObject wallPrefab = (GameObject)Resources.Load("WallCube");
         GameObject FloorPrefab = (GameObject)Resources.Load("FloorCube");
 
         //床・穴・壁を生成する
         for(int m = 0; m < mazeSize; m++){
             for(int n = 0; n < mazeSize; n++){
-                if(m == goal_y && n == goal_x) continue;
+                // ゴールの座標上は，別途設置処理
+                if(m == goal_y && n == goal_x){
+                    Stair = Instantiate(StairPrefab);
+                    Stair.transform.position = new Vector3(m*RouteScale, 0, n*RouteScale);
+                    Stair.transform.localScale = new Vector3(RouteScale*0.667f,RouteScale*0.33f,RouteScale*0.33f);
+                    Stair.transform.parent = StairBlock.transform;
+                    continue;
+                }
+                // 壁の設置を行うのは，BinaryMapが0の時だけ
                 if(mazeFullyBinaryMap[m][n] == 0){
                     wall = Instantiate(wallPrefab);
                     wall.transform.position = new Vector3(m*RouteScale, 1*RouteScale, n*RouteScale);
                     wall.transform.localScale = new Vector3(RouteScale,RouteScale,RouteScale);
                     wall.transform.parent = WallBlock.transform;
                 }
+                // 床の設置を行うのは，BinaryMapが1の時だけ
                 else{
                     floor = Instantiate(FloorPrefab);
                     floor.transform.position = new Vector3(m*RouteScale, 0, n*RouteScale);
