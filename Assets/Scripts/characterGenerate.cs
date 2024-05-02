@@ -7,7 +7,12 @@ public class characterGenerate : MonoBehaviour
     [SerializeField]
     GameObject MainCharacter;
 
-    // Start is called before the first frame update    
+    void Awake(){
+        GameObject Maincharacter = (GameObject)Resources.Load("Character");
+        GameObject instantedMainCharacter = Instantiate(Maincharacter);
+    }
+
+    // Start is called before the first frame update
     void Start()
     {
         Application.targetFrameRate = 60;
