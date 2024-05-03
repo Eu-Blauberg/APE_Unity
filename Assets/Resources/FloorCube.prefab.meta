@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Resources/FloorCube.prefab.meta
-guid: 54e214db6600d6a4681b6c32d2fb303a
-========
-guid: e0e3b7bbaffc445099a14c2f354aa3c6
->>>>>>>> origin/atsuki:Assets/Prefabs/BelowStair.prefab.meta
+guid: 860a082d8bd32e14fb82e32f181cb0cf
 PrefabImporter:
   externalObjects: {}
   userData: 

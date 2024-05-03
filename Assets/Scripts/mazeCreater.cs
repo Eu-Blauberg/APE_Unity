@@ -20,7 +20,7 @@ public class mazeCreater : MonoBehaviour
     GameObject StairBlock;
     [SerializeField]
     GameObject MainCharacter;
-    
+
     private int mazeSize = 21;
     private int mazeStagnationStepsLimit = 4;
     private float RouteScale = 3;
@@ -53,7 +53,7 @@ public class mazeCreater : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update(){
+    void FixedUpdate(){
 
     }
 

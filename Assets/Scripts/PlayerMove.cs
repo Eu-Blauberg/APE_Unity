@@ -36,7 +36,7 @@ public class PlayerMove : MonoBehaviour
         moveInput = Vector2.zero;
     }
 
-    void Update(){
+    void FixedUpdate(){
         Vector3 move = new Vector3(moveInput.x, 0, moveInput.y) * speed * Time.deltaTime;
         transform.Translate(move);
     }

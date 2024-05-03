@@ -32,7 +32,7 @@ public class PlayerLook : MonoBehaviour
         lookInput = Vector2.zero;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // プレイヤーを左右に回転
         float mouseX = lookInput.x * lookSpeed * Time.deltaTime;

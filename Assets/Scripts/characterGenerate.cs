@@ -16,7 +16,7 @@ public class characterGenerate : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (Input.GetKey("up")) // ↑なら前(Z 方向)に 0.1 だけ進む
         {
