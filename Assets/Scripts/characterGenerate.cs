@@ -20,11 +20,11 @@ public class characterGenerate : MonoBehaviour
     {
         if (Input.GetKey("up")) // ↑なら前(Z 方向)に 0.1 だけ進む
         {
-        instantedMainCharacter.transform.position += transform.forward * 0.1f;
+        instantedMainCharacter.transform.position += instantedMainCharacter.transform.forward * 0.1f;
         }
         if (Input.GetKey("down")) // ↓なら-Z 方向に 0.1 だけ進む
         {
-        instantedMainCharacter.transform.position -= transform.forward * 0.1f;
+        instantedMainCharacter.transform.position -= instantedMainCharacter.transform.forward * 0.1f;
         }
         if (Input.GetKey ("right")) // ←なら Y 軸に 3 度回転する
         {
