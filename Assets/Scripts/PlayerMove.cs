@@ -10,7 +10,11 @@ public class PlayerMove : MonoBehaviour
     public InputActionAsset inputActionAsset;
     private InputAction moveAction;
     private Vector2 moveInput;
-    void Awake(){
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
         // InputActionから「PlayerControls」マップと「Move」アクションを取得
         var actionMap = inputActionAsset.FindActionMap("PlayerControls");
         moveAction = actionMap.FindAction("Move");
@@ -21,11 +25,6 @@ public class PlayerMove : MonoBehaviour
         // アクションにコールバックを設定
         moveAction.performed += OnMovePerformed;
         moveAction.canceled += OnMoveCanceled;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
         Application.targetFrameRate = 60; // ← FPS を 60 に設定
     }
 

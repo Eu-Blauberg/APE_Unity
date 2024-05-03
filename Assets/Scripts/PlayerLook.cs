@@ -13,7 +13,7 @@ public class PlayerLook : MonoBehaviour
     public InputActionAsset inputActionAsset; // Input Actionsアセットへの参照
     private InputAction lookAction; // 視点移動用のアクション
 
-    void Awake()
+    void Start()
     {
         var actionMap = inputActionAsset.FindActionMap("PlayerControls");
         lookAction = actionMap.FindAction("Look");

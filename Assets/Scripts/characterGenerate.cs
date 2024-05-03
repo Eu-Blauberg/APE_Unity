@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class characterGenerate : MonoBehaviour
 {
-    [SerializeField]
-    GameObject MainCharacter;
 
-    void Awake(){
-        GameObject Maincharacter = (GameObject)Resources.Load("Character");
-        GameObject instantedMainCharacter = Instantiate(Maincharacter);
-    }
-
+    GameObject instantedMainCharacter;
     // Start is called before the first frame update
+
     void Start()
     {
+        GameObject maincharacter = (GameObject)Resources.Load("Character");
+        instantedMainCharacter = Instantiate(maincharacter);
         Application.targetFrameRate = 60;
     }
 
@@ -23,19 +20,19 @@ public class characterGenerate : MonoBehaviour
     {
         if (Input.GetKey("up")) // ↑なら前(Z 方向)に 0.1 だけ進む
         {
-        transform.position += transform.forward * 0.1f;
+        instantedMainCharacter.transform.position += transform.forward * 0.1f;
         }
         if (Input.GetKey("down")) // ↓なら-Z 方向に 0.1 だけ進む
         {
-        transform.position -= transform.forward * 0.1f;
+        instantedMainCharacter.transform.position -= transform.forward * 0.1f;
         }
         if (Input.GetKey ("right")) // ←なら Y 軸に 3 度回転する
         {
-        transform.Rotate(0f,3.0f,0f);
+        instantedMainCharacter.transform.Rotate(0f,3.0f,0f);
         }
         if (Input.GetKey ("left")) // →なら Y 軸に-3 度回転する
         {
-        transform.Rotate(0f, -3.0f, 0f);
+        instantedMainCharacter.transform.Rotate(0f, -3.0f, 0f);
         }
     }
 }

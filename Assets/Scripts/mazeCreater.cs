@@ -18,11 +18,14 @@ public class mazeCreater : MonoBehaviour
     GameObject FloorBlock;
     [SerializeField]
     GameObject StairBlock;
+    [SerializeField]
+    GameObject MainCharacter;
+    
     private int mazeSize = 21;
     private int mazeStagnationStepsLimit = 4;
     private float RouteScale = 3;
 
-    static byte[][] MazeMap;
+    private byte[][] mazeMap;
     int initial_y;
     int initial_x;
 
@@ -33,7 +36,7 @@ public class mazeCreater : MonoBehaviour
     void Start()
     {
         //全体のマップをバイナリで保存するための二次元配列
-        byte[][] mazeMap = new byte[mazeSize][];
+        mazeMap = new byte[mazeSize][];
         //一行分の0詰めされた配列
         byte[] mazeMapEachLen = Enumerable.Repeat<byte>(0,mazeSize).ToArray();
         //大きさがmazeSizeの正方行列を作成
@@ -45,9 +48,7 @@ public class mazeCreater : MonoBehaviour
         //Debug.Log(initial_y);
         //Debug.Log(initial_x);
 
-        GameObject maincharacter = (GameObject)Resources.Load("Character");
-        GameObject instantedMainCharacter = Instantiate(maincharacter);
-        instantedMainCharacter.transform.position = new Vector3(initial_y*RouteScale,1*RouteScale,initial_x*RouteScale);
+        MainCharacter.transform.position = new Vector3(initial_y*RouteScale,1*RouteScale,initial_x*RouteScale);
 
     }
 
