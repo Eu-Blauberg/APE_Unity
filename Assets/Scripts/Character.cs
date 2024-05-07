@@ -1,17 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class characterGenerate : MonoBehaviour
+public class Character : MonoBehaviour
 {
 
-    GameObject instantedMainCharacter;
+    private GameObject instantedMainCharacter;
     // Start is called before the first frame update
+    private int initial_y;
+    private int initial_x;
+    private float RouteScale;
 
     void Start()
     {
-        GameObject maincharacter = (GameObject)Resources.Load("Character");
-        instantedMainCharacter = Instantiate(maincharacter);
+        Debug.Log("Character Start");
         Application.targetFrameRate = 60;
     }
 
@@ -35,4 +38,21 @@ public class characterGenerate : MonoBehaviour
         instantedMainCharacter.transform.Rotate(0f, -3.0f, 0f);
         }
     }
+    
+    public void SetInitialData(int initial_y, int initial_x, float RouteScale){
+        this.initial_x = initial_x;
+        this.initial_y = initial_y;
+        this.RouteScale = RouteScale;
+        instantedMainCharacter.transform.position = new Vector3(initial_y*RouteScale,1*RouteScale,initial_x*RouteScale);
+        Debug.Log("Set end");
+    }
+
+    public void SetInstans(GameObject character){
+        instantedMainCharacter = character;
+    }
+
+    public void SwitchActivator(bool state){
+        instantedMainCharacter.gameObject.SetActive(state);
+    }
+    
 }

@@ -2,39 +2,37 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using JetBrains.Annotations;
 using Unity.VisualScripting;
-using UnityEditor.SceneManagement;
-using UnityEditor.UIElements;
-using UnityEditor.VersionControl;
 using UnityEngine;
 
-public class mazeCreater : MonoBehaviour
+public class MazeCreater : MonoBehaviour
 {   
-    [SerializeField]
+    // 各ブロックの親要素のロード
     GameObject WallBlock;
-    [SerializeField]
     GameObject FloorBlock;
-    [SerializeField]
     GameObject StairBlock;
-    [SerializeField]
-    GameObject MainCharacter;
+    public Character Maincharacter;
 
     private int mazeSize = 21;
-    private int mazeStagnationStepsLimit = 4;
-    private float RouteScale = 3;
+    private const int mazeStagnationStepsLimit = 4;
+    private const float RouteScale = 3;
+
 
     private byte[][] mazeMap;
-    int initial_y;
-    int initial_x;
+    private int initial_y;
+    private int initial_x;
 
-    int goal_y;
-    int goal_x;
+    private int goal_y;
+    private int goal_x;
 
     // Start is called before the first frame update
-    void Start()
+    
+    public void mazeCreate()
     {
+        Debug.Log("MazeCreater.cs Start");
+        WallBlock = Instantiate((GameObject)Resources.Load("wall"));
+        FloorBlock = Instantiate((GameObject)Resources.Load("floor"));
+        StairBlock = Instantiate((GameObject)Resources.Load("stair"));
         //全体のマップをバイナリで保存するための二次元配列
         mazeMap = new byte[mazeSize][];
         //一行分の0詰めされた配列
@@ -45,16 +43,12 @@ public class mazeCreater : MonoBehaviour
         byte[][] MazeFullyBinaryMap = ReturnVirtualBinaryMap(mazeMap);
         //実際に3D空間にブロックを配置する
         Fix3DMaze(MazeFullyBinaryMap);
-        //Debug.Log(initial_y);
-        //Debug.Log(initial_x);
-
-        MainCharacter.transform.position = new Vector3(initial_y*RouteScale,1*RouteScale,initial_x*RouteScale);
-
     }
+    
 
     // Update is called once per frame
     void FixedUpdate(){
-
+        
     }
 
     //マップを配列によってバイナリで生成します
@@ -208,9 +202,13 @@ public class mazeCreater : MonoBehaviour
         GameObject wall;
         GameObject floor;
         GameObject Stair;
-        GameObject StairPrefab = (GameObject)Resources.Load("BelowStair");
+        GameObject GoalJudgeSpace;
+        // ブロックのロード
         GameObject wallPrefab = (GameObject)Resources.Load("WallCube");
         GameObject FloorPrefab = (GameObject)Resources.Load("FloorCube");
+        GameObject StairPrefab = (GameObject)Resources.Load("BelowStair");
+
+        GameObject GoalJudgeSpacePrefab = (GameObject)Resources.Load("Goaljudgement");
 
         //床・穴・壁を生成する
         for(int m = 0; m < mazeSize; m++){
@@ -221,6 +219,11 @@ public class mazeCreater : MonoBehaviour
                     Stair.transform.position = new Vector3(m*RouteScale, 0, n*RouteScale);
                     Stair.transform.localScale = new Vector3(RouteScale*0.667f,RouteScale*0.33f,RouteScale*0.33f);
                     Stair.transform.parent = StairBlock.transform;
+
+                    GoalJudgeSpace = Instantiate(GoalJudgeSpacePrefab);
+                    GoalJudgeSpace.transform.position = new Vector3(m*RouteScale, 1*RouteScale, n*RouteScale);
+                    GoalJudgeSpace.transform.localScale = new Vector3(RouteScale,RouteScale,RouteScale);
+                    GoalJudgeSpace.transform.parent = StairBlock.transform;
                     continue;
                 }
                 // 壁の設置を行うのは，BinaryMapが0の時だけ
@@ -240,4 +243,44 @@ public class mazeCreater : MonoBehaviour
             }
         }
     }
+
+    // ここで，該当階層踏破後のパラメータの更新を行う．
+    private void MazeParamsUpdater(){
+        mazeSize += 5;
+        // 必要に応じて書き足していく
+    }
+
+    // 迷路の初期化処理=迷路の除去
+    private void MazeInitialize(){
+        foreach (Transform child in WallBlock.transform) Destroy(child.gameObject);  
+        foreach (Transform child in FloorBlock.transform) Destroy(child.gameObject); 
+        foreach (Transform child in StairBlock.transform) Destroy(child.gameObject);
+    }
+    
+    
+    public void MazeReCreate(){
+        // 迷路の初期化処理を開始
+        MazeInitialize();
+        MazeParamsUpdater();
+        mazeMap = new byte[mazeSize][];
+        byte[] mazeMapEachLen = Enumerable.Repeat<byte>(0,mazeSize).ToArray();
+        for (int i = 0; i < mazeSize; i++) mazeMap[i] = mazeMapEachLen.Clone() as byte[];
+        byte[][] MazeFullyBinaryMap = ReturnVirtualBinaryMap(mazeMap);
+        // 迷路の初期化処理を終了
+        Fix3DMaze(MazeFullyBinaryMap);
+    }
+    
+
+    public int GetInitialSpownCoordinate_x(){
+        return initial_x;
+    }
+
+    public int GetInitialSpownCoordinate_y(){
+        return initial_y;
+    }
+
+    public float GetRouteScale(){
+        return RouteScale;
+    }
+    
 }
