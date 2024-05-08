@@ -24,6 +24,7 @@ public class MazeCreater : MonoBehaviour
 
     private int goal_y;
     private int goal_x;
+    private int floorNumber = 1;
 
     // Start is called before the first frame update
     
@@ -269,7 +270,6 @@ public class MazeCreater : MonoBehaviour
         // 迷路の初期化処理を終了
         Fix3DMaze(MazeFullyBinaryMap);
     }
-    
 
     public int GetInitialSpownCoordinate_x(){
         return initial_x;
@@ -281,6 +281,10 @@ public class MazeCreater : MonoBehaviour
 
     public float GetRouteScale(){
         return RouteScale;
+    }
+
+    public int GetMazeScale(){
+        return mazeSize;
     }
     
 }
