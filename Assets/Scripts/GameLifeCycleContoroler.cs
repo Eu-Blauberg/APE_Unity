@@ -30,7 +30,8 @@ public class GameLifeCycleContoroler : MonoBehaviour
 
     private void TerminalStarter(){
         Terminal.AddComponent<MazeCreater>();
-        mazeCreater = Terminal.GetComponent<MazeCreater>();
+        mazeCreater = Terminal.GetComponent<MazeCreater>(); 
+        
 
         Hero = Instantiate((GameObject)Resources.Load("Character"));
         Hero.AddComponent<Character>();
