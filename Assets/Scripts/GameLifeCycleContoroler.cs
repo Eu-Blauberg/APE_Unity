@@ -45,7 +45,8 @@ public class GameLifeCycleContoroler : MonoBehaviour
     private void Restart(){
         character.SwitchActivator(false);
         mazeCreater.MazeReCreate();
-        character.SetInitialData(mazeCreater.GetInitialSpownCoordinate_x(), mazeCreater.GetInitialSpownCoordinate_y(), mazeCreater.GetRouteScale());
+        if(mazeCreater.GetFloorNumber() % 2 != 0) character.SetInitialData(mazeCreater.GetInitialSpownCoordinate_x(), mazeCreater.GetInitialSpownCoordinate_y(), mazeCreater.GetRouteScale());
+        else character.transform.position = new Vector3(-48, -10, 0f);
         character.SwitchActivator(true);
     }
 

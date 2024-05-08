@@ -11,7 +11,6 @@ public class MazeCreater : MonoBehaviour
     GameObject WallBlock;
     GameObject FloorBlock;
     GameObject StairBlock;
-    public Character Maincharacter;
 
     private int mazeSize = 21;
     private const int mazeStagnationStepsLimit = 4;
@@ -203,13 +202,18 @@ public class MazeCreater : MonoBehaviour
         GameObject wall;
         GameObject floor;
         GameObject Stair;
+        GameObject bakedfloor;
         GameObject GoalJudgeSpace;
         // ブロックのロード
         GameObject wallPrefab = (GameObject)Resources.Load("WallCube");
         GameObject FloorPrefab = (GameObject)Resources.Load("FloorCube");
         GameObject StairPrefab = (GameObject)Resources.Load("BelowStair");
+        GameObject BakedFloorPrefab = (GameObject)Resources.Load("FloorCube");
 
         GameObject GoalJudgeSpacePrefab = (GameObject)Resources.Load("Goaljudgement");
+        bakedfloor = Instantiate(BakedFloorPrefab);
+
+        //bakedfloor.transform.position
 
         //床・穴・壁を生成する
         for(int m = 0; m < mazeSize; m++){
@@ -241,6 +245,7 @@ public class MazeCreater : MonoBehaviour
                     floor.transform.localScale = new Vector3(RouteScale,RouteScale,RouteScale);
                     floor.transform.parent = FloorBlock.transform;
                 }
+
             }
         }
     }
@@ -248,6 +253,7 @@ public class MazeCreater : MonoBehaviour
     // ここで，該当階層踏破後のパラメータの更新を行う．
     private void MazeParamsUpdater(){
         mazeSize += 5;
+        floorNumber += 1;
         // 必要に応じて書き足していく
     }
 
@@ -285,6 +291,10 @@ public class MazeCreater : MonoBehaviour
 
     public int GetMazeScale(){
         return mazeSize;
+    }
+
+    public int GetFloorNumber(){
+        return floorNumber;
     }
     
 }
