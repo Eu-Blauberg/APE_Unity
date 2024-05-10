@@ -6,14 +6,14 @@ using UnityEngine;
 public class Item : ScriptableObject
 {
     public Sprite icon; // アイコン
-    public string name; // 名前
+    public string itemName; // 名前
     public string description; // 情報
     public int num; // 個数
 
     public Item(Item item)
     {
         this.icon = item.icon;
-        this.name = item.name;
+        this.name = item.itemName;
         this.description = item.description;
         this.num = item.num;
     }

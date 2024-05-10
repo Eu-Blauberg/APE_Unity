@@ -49,5 +49,15 @@ public class PlayerLook : MonoBehaviour
     {
         lookAction.Disable();
     }
+
+    public float GetSensitivity()
+    {
+        return lookSpeed;
+    }
+
+    public void SetSensitivity(float value)
+    {
+        lookSpeed = value;
+    }
 }
 

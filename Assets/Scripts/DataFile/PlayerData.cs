@@ -2,35 +2,73 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerData : MonoBehaviour
+public class PlayerData 
 {
-    //体力
-    public int life;
-    //取得したアイテムを保持するリスト
-    public List<Item> holdItems = new List<Item>();
+    private int life = 3;
+    private float speedDownTime;
+    public float speed;
 
-    //アイテムを取得するメソッド
-    public void GetItem(Item item)
+    private ControlGameDisplay controlGameDisplay;
+    private Inventry inv = new Inventry();
+
+    void Start()
     {
-        if (holdItems.Contains(item))
-        {
-            //アイテムを持っている場合は個数を増やす
-            item.num++;
-        }
-        holdItems.Add(item);
+        controlGameDisplay = GameObject.Find("DisplayManager").GetComponent<ControlGameDisplay>();
+        //UIにライフを反映
+        controlGameDisplay.UpdateLifeUI(life);
     }
 
-    //アイテムを使用するメソッド
-    public void UseItem(Item item)
+    public void ReduceLife()
     {
-        if (holdItems.Contains(item))
+        //インベントリにItemNameがバリアとなっているアイテムがある場合
+        if(inv.inventry.Exists(item => item.itemName == "バリア"))
         {
-            //アイテムを持っている場合は個数を減らす
-            item.num--;
-            if (item.num <= 0)
-            {
-                holdItems.Remove(item);
-            }
+            //バリアを1つ削除
+            inv.RemoveItem(inv.inventry.Find(item => item.itemName == "バリア"));
+
+            //UIにアイテムを反映
+            controlGameDisplay.UpdateInventoryUI();
         }
+        else
+        {
+            life --;
+            //一定時間スピードを下げる
+            //SpeedDownCoroutine();
+
+            //UIにライフを反映
+            controlGameDisplay.UpdateLifeUI(life);
+        }
+        
+        if(life <= 0)
+        {
+            Debug.Log("GameOver");
+            /*
+            ゲームオーバー処理を追加したい
+            */
+        }
+    }
+
+    //非MonoBehaviourクラスでStartCoroutineを使えないので外部クラスを使ってコルーチンを呼び出す
+    private void SpeedDownCoroutine()
+    {
+        IEnumerator coroutine = SpeedDown();
+        var myMono = new MyMonoBehaviour(); //MyMonoBehaviourのインスタンスを生成
+        myMono.CallStartCoroutine(coroutine); //MyMonoBehaviourのコルーチンを呼び出す
+    }
+
+    private IEnumerator SpeedDown()
+    {
+        speed /= 2;
+        yield return new WaitForSeconds(speedDownTime);
+        speed *= 2;
+    }
+}
+
+//MonoBehaviourを継承していないクラスでコルーチンを使うためのクラス
+public class MyMonoBehaviour : MonoBehaviour
+{
+    public void CallStartCoroutine(IEnumerator iEnumerator)
+    {
+        StartCoroutine(iEnumerator); //ここで実際にMonoBehaviour.StartCoroutine()を呼ぶ
     }
 }
