@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerLook : MonoBehaviour
 {
     public Transform cameraTransform; // カメラのTransform
-    public float lookSpeed = 2f; // 回転速度
+    public float lookSpeed = 200f; // 回転速度
     private Vector2 lookInput;
     private float xRotation = 0f; // カメラのX軸（上下）回転を制御するための変数
 
