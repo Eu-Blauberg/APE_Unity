@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Menu",
+                    "type": "Button",
+                    "id": "2d9c5b13-0ced-4398-95e7-12f8ef82a429",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -44,6 +53,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "29629d7b-a59c-40d6-ad4b-3b11cdf4aae7",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -103,7 +123,7 @@
                 {
                     "name": "",
                     "id": "bbba0a5a-ae01-445f-ba87-a140d134b906",
-                    "path": "",
+                    "path": "<Gamepad>/dpad/up",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -114,7 +134,7 @@
                 {
                     "name": "",
                     "id": "ab2f414f-e853-4720-94d2-83ed9bb531c8",
-                    "path": "",
+                    "path": "<Gamepad>/dpad/down",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -125,7 +145,7 @@
                 {
                     "name": "",
                     "id": "1e6d3487-75c8-44f3-9349-e2ce2487dce7",
-                    "path": "",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -136,7 +156,7 @@
                 {
                     "name": "",
                     "id": "9b3c9c2a-28a7-45d2-82bd-8c5cddac9000",
-                    "path": "",
+                    "path": "<Gamepad>/dpad/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -147,7 +167,7 @@
                 {
                     "name": "",
                     "id": "4bb7fda7-c21a-4344-a3cd-d8695981e64f",
-                    "path": "",
+                    "path": "<Gamepad>/dpad/left",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

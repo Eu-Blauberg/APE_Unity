@@ -1457,6 +1457,7 @@ GameObject:
   - component: {fileID: 8381843143145495701}
   - component: {fileID: 8381843143145495699}
   - component: {fileID: 8381843143145495698}
+  - component: {fileID: 6133160886935889305}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -1590,6 +1591,20 @@ MonoBehaviour:
   cameraTransform: {fileID: 8381843143767222906}
   lookSpeed: 300
   inputActionAsset: {fileID: -944628639613478452, guid: eb50905b7d2444c69bc771ce8e0cf4bc, type: 3}
+--- !u!114 &6133160886935889305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8381843143145495700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d00b437d2fa04e00b51e84763653105, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputActionAsset: {fileID: -944628639613478452, guid: eb50905b7d2444c69bc771ce8e0cf4bc, type: 3}
+  menuCanvas: {fileID: 2792098363389209086, guid: 999e83a43bc3f4a168857453340d41a3, type: 3}
 --- !u!1 &8381843143171766022
 GameObject:
   m_ObjectHideFlags: 0

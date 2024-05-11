@@ -6,37 +6,34 @@ using UnityEngine.InputSystem;
 
 public class ControlMainMenu : MonoBehaviour
 {
-    //アニメーターを自作クラスで管理する
-    [System.Serializable] public class AnimatorManager{
-        public Animator OnCursorAnimator;
-        public Animator OnClickAnimator;
-        public string boolName;
-    }
-    //インスペクターからアニメーターを管理するリストを作成
-    [SerializeField] List<AnimatorManager> animatorManagers;
+    [SerializeField] Animator CursorAnimator;
+    [SerializeField] InputActionAsset inputActionAsset;
+    [SerializeField] GameObject CursorAllowText;
+    [SerializeField] GameObject[] MenuTexts;
 
-    public InputActionAsset inputActionAsset;
     private InputAction UpAction;
     private InputAction DownAction;
     private InputAction ClickAction;
 
     private int currentMenuIndex;
-    private int menuIndexNum = 3;
 
     void OnEnable()
     {
+        //初期状態でカーソルが最初のメニューに合わせる
         currentMenuIndex = 0;
 
-        animatorManagers[currentMenuIndex].OnCursorAnimator.SetBool("OnCursor", true);
+        //CursorAllowTextのY座標をMenuTexts[currentMenuIndex]のY座標に合わせる
+        CursorAllowText.transform.position = new Vector3(CursorAllowText.transform.position.x, MenuTexts[currentMenuIndex].transform.position.y, CursorAllowText.transform.position.z);
     }
 
     void Start()
     {
         var actionMap = inputActionAsset.FindActionMap("UIControls");
+        if(actionMap == null) Debug.LogError("UIControlsアクションマップが見つかりません");
+        else Debug.Log("UIControlsアクションマップが見つかりました");
         UpAction = actionMap.FindAction("Up");
         DownAction = actionMap.FindAction("Down");
         ClickAction = actionMap.FindAction("Click");
-
 
         UpAction.Enable();
         DownAction.Enable();
@@ -59,35 +56,22 @@ public class ControlMainMenu : MonoBehaviour
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         Debug.Log("Down");
 
-        if(currentMenuIndex == (menuIndexNum - 1)) currentMenuIndex = 0;
+        if(currentMenuIndex == MenuTexts.Length - 1) currentMenuIndex = 0;
         else currentMenuIndex++;
-
-        for (int i = 0; i < menuIndexNum; i++)
-        {
-            if(i == currentMenuIndex){
-                animatorManagers[i].OnCursorAnimator.SetBool("OnCursor", true);
-            }else{
-                animatorManagers[i].OnCursorAnimator.SetBool("OnCursor", false);
-                animatorManagers[i].OnCursorAnimator.SetTrigger("Reset");
-            }
-        }
+        
+        //CursorAllowTextのY座標をMenuTexts[currentMenuIndex]のY座標に合わせる
+        CursorAllowText.transform.position = new Vector3(CursorAllowText.transform.position.x, MenuTexts[currentMenuIndex].transform.position.y, CursorAllowText.transform.position.z);
     }
 
     private void OnUpPerformed(InputAction.CallbackContext context){
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         Debug.Log("Up");
-        if(currentMenuIndex == 0) currentMenuIndex = (menuIndexNum - 1);
+        
+        if(currentMenuIndex == 0) currentMenuIndex = MenuTexts.Length - 1;
         else currentMenuIndex--;
 
-        for (int i = 0; i < menuIndexNum; i++)
-        {
-            if(i == currentMenuIndex){
-                animatorManagers[i].OnCursorAnimator.SetBool("OnCursor", true);
-            }else{
-                animatorManagers[i].OnCursorAnimator.SetBool("OnCursor", false);
-                animatorManagers[i].OnCursorAnimator.SetTrigger("Reset");
-            }
-        }
+        //CursorAllowTextのY座標をMenuTexts[currentMenuIndex]のY座標に合わせる
+        CursorAllowText.transform.position = new Vector3(CursorAllowText.transform.position.x, MenuTexts[currentMenuIndex].transform.position.y, CursorAllowText.transform.position.z);
     }
 
     private void OnClickPerformed(InputAction.CallbackContext context){
@@ -96,15 +80,19 @@ public class ControlMainMenu : MonoBehaviour
         switch (currentMenuIndex)
         {
             case 0:
-                animatorManagers[currentMenuIndex].OnClickAnimator.SetTrigger("OnClick");
+                CursorAnimator.SetTrigger("OnClicked");
                 GameObject.Find("MenuMaster").GetComponent<MasterMenu>().CloseMainMenu();
                 break;
             case 1:
-                animatorManagers[currentMenuIndex].OnClickAnimator.SetTrigger("OnClick");
-                GameObject.Find("MenuMaster").GetComponent<MasterMenu>().OpenOptionMenu();
+                CursorAnimator.SetTrigger("OnClicked");
+                GameObject.Find("MenuMaster").GetComponent<MasterMenu>().StartCoroutine("OpenOptionMenu");
                 break;
             case 2:
-                animatorManagers[currentMenuIndex].OnClickAnimator.SetTrigger("OnClick");
+                CursorAnimator.SetTrigger("OnClicked");
+                GameObject.Find("MenuMaster").GetComponent<MasterMenu>().StartCoroutine("OpenItemMenu");
+                break;
+            case 3:
+                CursorAnimator.SetTrigger("OnClicked");
                 #if UNITY_EDITOR
                     UnityEditor.EditorApplication.isPlaying = false;//エディタ上のゲームプレイ終了
                 #else
