@@ -7,37 +7,37 @@ using UnityEngine.InputSystem;
 
 public class ControlItemWindow : MonoBehaviour
 {
-    [System.Serializable] public class AnimatorManager{
-        public Animator OnCursorAnimator;
-        public Animator OnClickAnimator;
-        public string boolName;
-    }
-
-    //インスペクターからアニメーターを管理するリストを作成
-    [SerializeField] List<AnimatorManager> animatorManagers;
-
     //アイテムウィンドウの各要素を格納する変数
     [SerializeField] UnityEngine.UI.Image itemImage;
     [SerializeField] UnityEngine.UI.Text itemName;
     [SerializeField] UnityEngine.UI.Text itemDescription;
 
-    private InputActionAsset inputActionAsset;
+    [SerializeField] Animator CursorAnimator;
+    [SerializeField] GameObject CursorAllowText;
+    [SerializeField] InputActionAsset inputActionAsset;
+    [SerializeField] ItemDataBase itemDataBase;
+
     private InputAction UpAction;
     private InputAction DownAction;
     private InputAction RightAction;
     private InputAction LeftAction;
     private InputAction ClickAction;
 
-    //プレイヤーデータを格納する変数
-    private PlayerData playerData;
-    private Inventry inv = new Inventry();
-
     private int currentItemIndex = 0;
+    private int InventoryNum = 0;//インベントリのアイテム数
     private bool isDown;//戻るボタン選択中かどうかのフラグ
 
+    //インスタンス化されるたびに呼び出される
     void OnEnable()
     {
+        foreach (var item in itemDataBase.items)
+        {
+            if (item.num > 0) InventoryNum ++;
+        }
+
         currentItemIndex = 0;
+
+        UpdateItemWindow(currentItemIndex);
     }
 
     void Start()
@@ -60,6 +60,8 @@ public class ControlItemWindow : MonoBehaviour
         RightAction.performed += OnRightPerformed;
         LeftAction.performed += OnLeftPerformed;
         ClickAction.performed += OnClickPerformed;
+
+        CursorAllowText.SetActive(false);
     }   
 
     void OnDisable()
@@ -76,24 +78,21 @@ public class ControlItemWindow : MonoBehaviour
         if(isDown) return; //戻るボタン選択中なら処理を抜ける
         Debug.Log("Right");
 
-        //右矢印のアニメーションを再生
-        StartCoroutine(OnClickController(animatorManagers[0]));
-
-        //アイテムリストの最後の要素に到達したら最初の要素に戻る
-        if(currentItemIndex == inv.inventry.Count - 1) currentItemIndex = 0;
+        if(currentItemIndex == itemDataBase.items.Count - 1) currentItemIndex = 0;
         else currentItemIndex++;
+
+        UpdateItemWindow(currentItemIndex);
+
     }
 
     private void OnLeftPerformed(InputAction.CallbackContext context){
         if(isDown) return; //戻るボタン選択中なら処理を抜ける
         Debug.Log("Left");
 
-        //左矢印のアニメーションを再生
-        StartCoroutine(OnClickController(animatorManagers[1]));
+        if(currentItemIndex == 0) currentItemIndex = itemDataBase.items.Count - 1;
+        else currentItemIndex--;
 
-        //アイテムリストの最初の要素に到達したら最後の要素に戻る
-        if(currentItemIndex == 0) currentItemIndex = inv.inventry.Count - 1;
-        else currentItemIndex--;  
+        UpdateItemWindow(currentItemIndex);
     }
         
     private void OnDownPerformed(InputAction.CallbackContext context){
@@ -101,32 +100,35 @@ public class ControlItemWindow : MonoBehaviour
 
         isDown = true;
 
-        animatorManagers[2].OnCursorAnimator.SetBool("OnCursor", true);
+        CursorAllowText.SetActive(true);
     }
 
     private void OnUpPerformed(InputAction.CallbackContext context){
         Debug.Log("Up");
 
-        animatorManagers[2].OnCursorAnimator.SetBool("OnCursor", false);
-        animatorManagers[2].OnCursorAnimator.SetTrigger("Reset");
-
         isDown = false;
+
+        CursorAllowText.SetActive(false);
     }
 
     private void OnClickPerformed(InputAction.CallbackContext context){
-        if(!isDown) return; //戻るボタン選択中なら処理を抜ける
+        if(!isDown) return; //戻るボタン選択中でない場合は処理を抜ける
 
         Debug.Log("Click");
 
-        animatorManagers[2].OnCursorAnimator.SetTrigger("Reset");
-        animatorManagers[2].OnClickAnimator.SetTrigger("OnClick");
-
-        Destroy(transform.parent.gameObject);
+        GameObject.Find("MenuMaster").GetComponent<MasterMenu>().StartCoroutine("CloseItemMenu");
     }
 
-    private IEnumerator OnClickController(AnimatorManager animatorManagers){
-        animatorManagers.OnClickAnimator.SetTrigger("OnClick");
-        yield return new WaitForSecondsRealtime(0.3f);
-        animatorManagers.OnClickAnimator.SetTrigger("Reset");
+    private void UpdateItemWindow(int index){
+        if(InventoryNum == 0){
+            itemImage.sprite = null;
+            itemName.text = "アイテムがありません";
+            itemDescription.text = "";
+        }else{
+            itemImage.sprite = itemDataBase.items[index].icon;
+            itemName.text = itemDataBase.items[index].itemName;
+            itemDescription.text = itemDataBase.items[index].description;
+        }
     }
+
 }

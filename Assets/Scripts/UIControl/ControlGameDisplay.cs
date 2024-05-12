@@ -10,8 +10,7 @@ public class ControlGameDisplay : MonoBehaviour
     [SerializeField] private Sprite offLifeSprite;
     [SerializeField] private Image[] inventoryImage = new Image[3];
     [SerializeField] private Text[] inventoryNum = new Text[3];
-
-    private Inventry inv = new Inventry();
+    [SerializeField] private ItemDataBase itemDataBase;
 
     //ライフUIの更新
     public void UpdateLifeUI(int life)
@@ -44,28 +43,22 @@ public class ControlGameDisplay : MonoBehaviour
     //インベントリUIの更新
     public void UpdateInventoryUI()
     {
-        if(inv.inventry.Count == 0)
+        //データベースを検索してアイテムの個数が1以上の場合
+        for(int i = 0; i < itemDataBase.items.Count; i++)
         {
-            for(int i = 0; i < 3; i++)
+            if(itemDataBase.items[i].num > 0)
             {
-                inventoryImage[0].sprite = null;
-                inventoryNum[0].text = "";
-            }
-            return;
-        }
-
-        for(int i = 0; i < 3; i++)
-        {
-            if(inv.inventry.Count > i)
-            {
-                inventoryImage[i].sprite = inv.inventry[i].icon;
-                inventoryNum[i].text = inv.inventry[i].num.ToString();
+                //アイテムの画像を表示
+                inventoryImage[i].sprite = itemDataBase.items[i].icon;
+                //アイテムの個数を表示
+                inventoryNum[i].text = itemDataBase.items[i].num.ToString();
             }
             else
             {
+                //アイテムの画像を非表示
                 inventoryImage[i].sprite = null;
-                inventoryNum[i].text = "";
-                Debug.Log("null");
+                //アイテムの個数を非表示
+                inventoryNum[i].text = null;
             }
         }
     }

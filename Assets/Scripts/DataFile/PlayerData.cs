@@ -8,12 +8,13 @@ public class PlayerData
     private float speedDownTime;
     public float speed;
 
+    [SerializeField] private ItemDataBase itemDataBase;
+    [SerializeField] private GameObject controlGameDisplayObj;
     private ControlGameDisplay controlGameDisplay;
-    private Inventry inv = new Inventry();
 
     void Start()
     {
-        controlGameDisplay = GameObject.Find("DisplayManager").GetComponent<ControlGameDisplay>();
+        controlGameDisplay = controlGameDisplayObj.GetComponent<ControlGameDisplay>();
         //UIにライフを反映
         controlGameDisplay.UpdateLifeUI(life);
     }
@@ -21,10 +22,10 @@ public class PlayerData
     public void ReduceLife()
     {
         //インベントリにItemNameがバリアとなっているアイテムがある場合
-        if(inv.inventry.Exists(item => item.itemName == "バリア"))
+        if(itemDataBase.items.Exists(item => item.itemName == "バリア"))
         {
             //バリアを1つ削除
-            inv.RemoveItem(inv.inventry.Find(item => item.itemName == "バリア"));
+            itemDataBase.RemoveItem(itemDataBase.items.Find(item => item.itemName == "バリア"));
 
             //UIにアイテムを反映
             controlGameDisplay.UpdateInventoryUI();

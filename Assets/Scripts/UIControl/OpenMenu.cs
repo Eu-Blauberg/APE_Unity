@@ -19,20 +19,18 @@ public class OpenMenu : MonoBehaviour
 
     private void OnMenuPerformed(InputAction.CallbackContext context)
     {
-        if (GameObject.Find("MenuCanvas") != null)
+        if (GameObject.Find("MenuCanvas(Clone)") != null)
         {
             // メニューを閉じる
-            Destroy(GameObject.Find("MenuCanvas"));
-            Debug.Log("CloseMenu");
+            Destroy(GameObject.Find("MenuCanvas(Clone)"));
+            Debug.Log("CloseMenu(Clone)");
             Time.timeScale = 1;
             return;
         }else
         {
             // メニューを開く
             GameObject instantedMenuCanvas = Instantiate(menuCanvas);
-            instantedMenuCanvas.name = "MenuCanvas";
             Debug.Log("OpenMenu");
-            instantedMenuCanvas.SetActive(true);
             Time.timeScale = 0;
         }
     }

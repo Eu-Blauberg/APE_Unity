@@ -29,8 +29,6 @@ public class ControlMainMenu : MonoBehaviour
     void Start()
     {
         var actionMap = inputActionAsset.FindActionMap("UIControls");
-        if(actionMap == null) Debug.LogError("UIControlsアクションマップが見つかりません");
-        else Debug.Log("UIControlsアクションマップが見つかりました");
         UpAction = actionMap.FindAction("Up");
         DownAction = actionMap.FindAction("Down");
         ClickAction = actionMap.FindAction("Click");
@@ -56,6 +54,9 @@ public class ControlMainMenu : MonoBehaviour
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         Debug.Log("Down");
 
+        //Menumasterが見つからない場合は処理を抜ける
+        if(GameObject.Find("MenuMaster") == null) return;
+
         if(currentMenuIndex == MenuTexts.Length - 1) currentMenuIndex = 0;
         else currentMenuIndex++;
         
@@ -66,6 +67,9 @@ public class ControlMainMenu : MonoBehaviour
     private void OnUpPerformed(InputAction.CallbackContext context){
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         Debug.Log("Up");
+
+        //Menumasterが見つからない場合は処理を抜ける
+        if(GameObject.Find("MenuMaster") == null) return;
         
         if(currentMenuIndex == 0) currentMenuIndex = MenuTexts.Length - 1;
         else currentMenuIndex--;
@@ -77,19 +81,30 @@ public class ControlMainMenu : MonoBehaviour
     private void OnClickPerformed(InputAction.CallbackContext context){
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         Debug.Log("Click");
+        GameObject menuMaster = GameObject.Find("MenuMaster");
+        if (menuMaster == null) {
+            Debug.LogError("MenuMasterが見つかりません。");
+            return;
+        }
+        MasterMenu masterMenu = menuMaster.GetComponent<MasterMenu>();
+        if (masterMenu == null) {
+            Debug.LogError("MasterMenuコンポーネントがMenuMasterにアタッチされていません。");
+            return;
+        }
+
         switch (currentMenuIndex)
         {
             case 0:
                 CursorAnimator.SetTrigger("OnClicked");
-                GameObject.Find("MenuMaster").GetComponent<MasterMenu>().CloseMainMenu();
+                masterMenu.CloseMainMenu();
                 break;
             case 1:
                 CursorAnimator.SetTrigger("OnClicked");
-                GameObject.Find("MenuMaster").GetComponent<MasterMenu>().StartCoroutine("OpenOptionMenu");
+                masterMenu.StartCoroutine("OpenOptionMenu");
                 break;
             case 2:
                 CursorAnimator.SetTrigger("OnClicked");
-                GameObject.Find("MenuMaster").GetComponent<MasterMenu>().StartCoroutine("OpenItemMenu");
+                masterMenu.StartCoroutine("OpenItemMenu");
                 break;
             case 3:
                 CursorAnimator.SetTrigger("OnClicked");
