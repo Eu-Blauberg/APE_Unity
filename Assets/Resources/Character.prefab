@@ -1457,7 +1457,7 @@ GameObject:
   - component: {fileID: 8381843143145495701}
   - component: {fileID: 8381843143145495699}
   - component: {fileID: 8381843143145495698}
-  - component: {fileID: 6133160886935889305}
+  - component: {fileID: 4907912052942358329}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -1591,7 +1591,7 @@ MonoBehaviour:
   cameraTransform: {fileID: 8381843143767222906}
   lookSpeed: 300
   inputActionAsset: {fileID: -944628639613478452, guid: eb50905b7d2444c69bc771ce8e0cf4bc, type: 3}
---- !u!114 &6133160886935889305
+--- !u!114 &4907912052942358329
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

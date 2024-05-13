@@ -34,10 +34,10 @@ public class ControlOptionMenu : MonoBehaviour
         currentMenuIndex = 0;
 
         animatorManagers[currentMenuIndex].OnCursorAnimator.SetBool("OnCursor", true);
-    }
 
-    void Start()
-    {
+        /*
+        InputActionAssetからアクションマップを取得し、その中からアクションを取得する
+        */
         var actionMap = inputActionAsset.FindActionMap("UIControls");
         UpAction = actionMap.FindAction("Up");
         DownAction = actionMap.FindAction("Down");
@@ -55,9 +55,11 @@ public class ControlOptionMenu : MonoBehaviour
         DownAction.performed += OnDownPerformed;
         ClickAction.performed += OnClickPerformed;
 
+        //スライダーの初期値を設定
         SensiSlider.value = GameObject.Find("Character").GetComponent<PlayerLook>().GetSensitivity();
     }
 
+    //非アクティブ時に呼び出される
     void OnDisable()
     {
         UpAction.Disable();
@@ -162,7 +164,8 @@ public class ControlOptionMenu : MonoBehaviour
                 break;
             case 2:
                 animatorManagers[currentMenuIndex].OnClickAnimator.SetTrigger("OnClick");
-                GameObject.Find("MenuMaster").GetComponent<MasterMenu>().StartCoroutine("CloseOptionMenu");
+                MasterMenu masterMenu = GameObject.Find("MasterMenu").GetComponent<MasterMenu>();
+                masterMenu.CloseOptionMenu();
                 break;
         }
     }

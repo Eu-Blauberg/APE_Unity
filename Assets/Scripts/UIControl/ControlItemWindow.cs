@@ -38,10 +38,10 @@ public class ControlItemWindow : MonoBehaviour
         currentItemIndex = 0;
 
         UpdateItemWindow(currentItemIndex);
-    }
 
-    void Start()
-    {
+        /*
+        InputActionAssetからアクションマップを取得し、その中からアクションを取得する
+        */
         var actionMap = inputActionAsset.FindActionMap("UIControls");
         UpAction = actionMap.FindAction("Up");
         DownAction = actionMap.FindAction("Down");
@@ -61,9 +61,11 @@ public class ControlItemWindow : MonoBehaviour
         LeftAction.performed += OnLeftPerformed;
         ClickAction.performed += OnClickPerformed;
 
+        //戻るボタン選択中の場合のみカーソルを表示する
         CursorAllowText.SetActive(false);
-    }   
+    }
 
+    //非アクティブ時に呼び出される
     void OnDisable()
     {
         UpAction.Disable();
@@ -73,7 +75,6 @@ public class ControlItemWindow : MonoBehaviour
         ClickAction.Disable();
     }
 
-
     private void OnRightPerformed(InputAction.CallbackContext context){
         if(isDown) return; //戻るボタン選択中なら処理を抜ける
         Debug.Log("Right");
@@ -82,7 +83,6 @@ public class ControlItemWindow : MonoBehaviour
         else currentItemIndex++;
 
         UpdateItemWindow(currentItemIndex);
-
     }
 
     private void OnLeftPerformed(InputAction.CallbackContext context){
@@ -116,7 +116,8 @@ public class ControlItemWindow : MonoBehaviour
 
         Debug.Log("Click");
 
-        GameObject.Find("MenuMaster").GetComponent<MasterMenu>().StartCoroutine("CloseItemMenu");
+        MasterMenu masterMenu = GameObject.Find("MasterMenu").GetComponent<MasterMenu>();
+        masterMenu.CloseItemMenu();
     }
 
     private void UpdateItemWindow(int index){

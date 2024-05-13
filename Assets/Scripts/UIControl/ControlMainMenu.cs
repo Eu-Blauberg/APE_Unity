@@ -11,12 +11,13 @@ public class ControlMainMenu : MonoBehaviour
     [SerializeField] GameObject CursorAllowText;
     [SerializeField] GameObject[] MenuTexts;
 
-    private InputAction UpAction;
-    private InputAction DownAction;
-    private InputAction ClickAction;
+    
+    private GameInputs gameInputs;
+    private MasterMenu masterMenu;
 
-    private int currentMenuIndex;
+    [SerializeField]private int currentMenuIndex;
 
+    //アクティブ時に呼び出される
     void OnEnable()
     {
         //初期状態でカーソルが最初のメニューに合わせる
@@ -28,34 +29,28 @@ public class ControlMainMenu : MonoBehaviour
 
     void Start()
     {
-        var actionMap = inputActionAsset.FindActionMap("UIControls");
-        UpAction = actionMap.FindAction("Up");
-        DownAction = actionMap.FindAction("Down");
-        ClickAction = actionMap.FindAction("Click");
+        gameInputs = new GameInputs();
+        if(gameInputs == null) Debug.Log("GameInputs is null");
 
-        UpAction.Enable();
-        DownAction.Enable();
-        ClickAction.Enable();
+        gameInputs.UIControls.Down.performed += OnDownPerformed;
+        gameInputs.UIControls.Up.performed += OnUpPerformed;
+        gameInputs.UIControls.Click.performed += OnClickPerformed;
 
-        UpAction.performed += OnUpPerformed;
-        DownAction.performed += OnDownPerformed;
-        ClickAction.performed += OnClickPerformed;
+        gameInputs.Enable();
+
+        masterMenu = GameObject.Find("MasterMenu").GetComponent<MasterMenu>();
     }
 
-    void OnDisable()
+    //非アクティブ時に呼び出される
+    private void OnDestroy()
     {
-        UpAction.Disable();
-        DownAction.Disable();
-        ClickAction.Disable();
+        gameInputs?.Dispose();
     }
 
 
     private void OnDownPerformed(InputAction.CallbackContext context){
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         Debug.Log("Down");
-
-        //Menumasterが見つからない場合は処理を抜ける
-        if(GameObject.Find("MenuMaster") == null) return;
 
         if(currentMenuIndex == MenuTexts.Length - 1) currentMenuIndex = 0;
         else currentMenuIndex++;
@@ -67,9 +62,6 @@ public class ControlMainMenu : MonoBehaviour
     private void OnUpPerformed(InputAction.CallbackContext context){
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         Debug.Log("Up");
-
-        //Menumasterが見つからない場合は処理を抜ける
-        if(GameObject.Find("MenuMaster") == null) return;
         
         if(currentMenuIndex == 0) currentMenuIndex = MenuTexts.Length - 1;
         else currentMenuIndex--;
@@ -81,16 +73,6 @@ public class ControlMainMenu : MonoBehaviour
     private void OnClickPerformed(InputAction.CallbackContext context){
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         Debug.Log("Click");
-        GameObject menuMaster = GameObject.Find("MenuMaster");
-        if (menuMaster == null) {
-            Debug.LogError("MenuMasterが見つかりません。");
-            return;
-        }
-        MasterMenu masterMenu = menuMaster.GetComponent<MasterMenu>();
-        if (masterMenu == null) {
-            Debug.LogError("MasterMenuコンポーネントがMenuMasterにアタッチされていません。");
-            return;
-        }
 
         switch (currentMenuIndex)
         {
@@ -100,11 +82,11 @@ public class ControlMainMenu : MonoBehaviour
                 break;
             case 1:
                 CursorAnimator.SetTrigger("OnClicked");
-                masterMenu.StartCoroutine("OpenOptionMenu");
+                masterMenu.OpenOptionMenu();
                 break;
             case 2:
                 CursorAnimator.SetTrigger("OnClicked");
-                masterMenu.StartCoroutine("OpenItemMenu");
+                masterMenu.OpenItemMenu();
                 break;
             case 3:
                 CursorAnimator.SetTrigger("OnClicked");
