@@ -10,23 +10,22 @@ public class DisplayOperation : MonoBehaviour
     [SerializeField] private GameObject Player;
     [SerializeField] private GameObject Rover;
     [SerializeField] private GameObject OperationText;
-    [SerializeField] private GameObject ItemCanvas_Pre; // クリックアクション
+    [SerializeField] private GameObject TradeCanvas; // クリックアクション
+    [SerializeField] InputActionAsset inputActionAsset;
 
     private const float distanceThreshold = 2.0f;
     private float distance;
     private bool isDisplayed = false;
     private Vector2 PlayerPoint;
     private Vector2 RoverPoint;
+    private GameInputs gameInputs;
 
-    public InputActionAsset inputActionAsset; // Input Actionsアセットへの参照
-    private InputAction clickAction; // 視点移動用のアクション
 
     void Awake()
     {
-        var actionMap = inputActionAsset.FindActionMap("UIControls");
-        clickAction = actionMap.FindAction("Click");
-        clickAction.Enable();
-        clickAction.performed += OnClickPerformed;
+        gameInputs = new GameInputs();
+        gameInputs.UIControls.Click.performed += OnClickPerformed;
+        gameInputs.Enable();
     }
 
     void Start()
@@ -60,7 +59,8 @@ public class DisplayOperation : MonoBehaviour
     {
         if(isDisplayed)
         {
-            GameObject instantedItemWindow = Instantiate(ItemCanvas_Pre);
+            GameObject instantedItemWindow = Instantiate(TradeCanvas);
+            Time.timeScale = 0;
         }
     }
 }

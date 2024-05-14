@@ -22,6 +22,8 @@ public class ItemDataBase : ScriptableObject
             items.Add(item);
             Debug.Log("AddItem(" + item.itemName + ")");
         }
+
+        SortItem();
     }
 
     public void RemoveItem(Item item)
@@ -35,8 +37,20 @@ public class ItemDataBase : ScriptableObject
                 //itemの個数を減らす
                 item.num--;
             }
-            else return;
+            else
+            {
+                //itemの個数が0の場合
+                //itemsからitemを削除
+                items.Remove(item);
+                Debug.Log("RemoveItem(" + item.itemName + ")");
+            }
         }
-        else return;
+        SortItem();
+    }
+
+    //アイテムを個数順に並び替える
+    private void SortItem()
+    {
+        items.Sort((a, b) => b.num - a.num);
     }
 }

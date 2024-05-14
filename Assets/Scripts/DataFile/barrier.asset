@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: barrier
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 85505555a457bc7419c876e07f0d005d, type: 3}
-  name: "\u30D0\u30EA\u30A2"
+  itemName: "\u30D0\u30EA\u30A2"
   description: "\u4E00\u5EA6\u3060\u3051\u8EAB\u3092\u5B88\u308B\u3053\u3068\u304C\u3067\u304D\u308B"
-  id: 1
+  num: 3

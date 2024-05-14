@@ -37,6 +37,7 @@ public class PlayerMove : MonoBehaviour
     }
 
     void FixedUpdate(){
+        if(Time.timeScale == 0) return;
         Vector3 move = new Vector3(moveInput.x, 0, moveInput.y) * speed * Time.deltaTime;
         transform.Translate(move);
     }

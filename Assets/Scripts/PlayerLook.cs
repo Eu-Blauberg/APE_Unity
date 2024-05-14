@@ -34,6 +34,7 @@ public class PlayerLook : MonoBehaviour
 
     void FixedUpdate()
     {
+        if(Time.timeScale == 0) return;
         // プレイヤーを左右に回転
         float mouseX = lookInput.x * lookSpeed * Time.deltaTime;
         transform.Rotate(0, mouseX, 0);

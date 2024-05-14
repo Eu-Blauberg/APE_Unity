@@ -27,13 +27,13 @@ public class OpenMenu : MonoBehaviour
             {
                 _gameObject.SetActive(true);
                 Debug.Log("Active" + _gameObject.name);
-                Time.timeScale = 1;
+                Time.timeScale = 0;
             }
             else
             {
                 _gameObject.SetActive(false);
                 Debug.Log("Close " + _gameObject.name);
-                Time.timeScale = 0;
+                Time.timeScale = 1;
             }
         }
         else

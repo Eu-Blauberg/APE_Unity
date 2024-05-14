@@ -7,82 +7,67 @@ using UnityEngine.UI;
 
 public class ControlOptionMenu : MonoBehaviour
 {
-    //アニメーターを自作クラスで管理する
-    [System.Serializable] public class AnimatorManager{
-        public Animator OnCursorAnimator;
-        public Animator OnClickAnimator;
-        public string boolName;
-    }
-
-    //インスペクターからアニメーターを管理するリストを作成
-    [SerializeField] List<AnimatorManager> animatorManagers;
+    [SerializeField] Animator CursorAnimator;
+    [SerializeField] GameObject CursorAllowText;
+    [SerializeField] GameObject[] MenuTexts;
     [SerializeField] Slider SensiSlider;
     [SerializeField] Slider VolSlider;
+    [SerializeField] InputActionAsset inputActionAsset;
 
-    public InputActionAsset inputActionAsset;
-    private InputAction UpAction;
-    private InputAction DownAction;
-    private InputAction ClickAction;
-    private InputAction RightAction;
-    private InputAction LeftAction;
-
+    private GameInputs gameInputs;
+    private MasterMenu masterMenu;
+    private PlayerLook playerLook;
     private int currentMenuIndex;
-
     
     void OnEnable()
     {
         currentMenuIndex = 0;
 
-        animatorManagers[currentMenuIndex].OnCursorAnimator.SetBool("OnCursor", true);
+        //CursorAllowTextのY座標をMenuTexts[currentMenuIndex]のY座標に合わせる
+        CursorAllowText.transform.position = new Vector3(CursorAllowText.transform.position.x, MenuTexts[currentMenuIndex].transform.position.y, CursorAllowText.transform.position.z);
+    }
 
+    void Start()
+    {
         /*
         InputActionAssetからアクションマップを取得し、その中からアクションを取得する
         */
-        var actionMap = inputActionAsset.FindActionMap("UIControls");
-        UpAction = actionMap.FindAction("Up");
-        DownAction = actionMap.FindAction("Down");
-        ClickAction = actionMap.FindAction("Click");
-        RightAction = actionMap.FindAction("Right");
-        LeftAction = actionMap.FindAction("Left");
+        gameInputs = new GameInputs();
+        if(gameInputs == null) Debug.Log("GameInputs is null");
 
-        UpAction.Enable();
-        DownAction.Enable();
-        ClickAction.Enable();
-        RightAction.Enable();
-        LeftAction.Enable();
+        gameInputs.UIControls.Down.performed += OnDownPerformed;
+        gameInputs.UIControls.Up.performed += OnUpPerformed;
+        gameInputs.UIControls.Click.performed += OnClickPerformed;
 
-        UpAction.performed += OnUpPerformed;
-        DownAction.performed += OnDownPerformed;
-        ClickAction.performed += OnClickPerformed;
+        gameInputs.Enable();
+
+        masterMenu = GameObject.Find("MasterMenu").GetComponent<MasterMenu>();
+        playerLook = GameObject.Find("Character(Clone)").GetComponent<PlayerLook>();
 
         //スライダーの初期値を設定
-        SensiSlider.value = GameObject.Find("Character").GetComponent<PlayerLook>().GetSensitivity();
+        SensiSlider.value = playerLook.GetSensitivity();
     }
 
     //非アクティブ時に呼び出される
-    void OnDisable()
+    private void OnDestroy()
     {
-        UpAction.Disable();
-        DownAction.Disable();
-        ClickAction.Disable();
-        RightAction.Disable();
-        LeftAction.Disable();
+        gameInputs?.Dispose();
     }
 
     //方向キーの長押しを検知して各オプションを変更できるようにする
     void Update()
     {
         // Rightボタンが押されているか確認
-        if (RightAction.ReadValue<float>() > 0)
+        if (gameInputs.UIControls.Right.ReadValue<float>() > 0)
         {
-            var PressRight = RightAction.GetTimeoutCompletionPercentage();
+            var PressRight = gameInputs.UIControls.Right.GetTimeoutCompletionPercentage();
             if (PressRight >= 1.0f)
             {
                 switch(currentMenuIndex)
                 {
                     case 0:
                         SensiSlider.value += 5.0f;
-                        GameObject.Find("Character").GetComponent<PlayerLook>().SetSensitivity(SensiSlider.value);
+                        playerLook.SetSensitivity(SensiSlider.value);
                         break;
                     case 1:
                         VolSlider.value += 5.0f;
@@ -93,18 +78,18 @@ public class ControlOptionMenu : MonoBehaviour
                 }
             }
         }
-
+        
         // Leftボタンが押されているか確認
-        if (LeftAction.ReadValue<float>() > 0)
+        if (gameInputs.UIControls.Left.ReadValue<float>() > 0)
         {
-            var PressLeft = LeftAction.GetTimeoutCompletionPercentage();
+            var PressLeft = gameInputs.UIControls.Left.GetTimeoutCompletionPercentage();
             if (PressLeft >= 1.0f)
             {
                 switch(currentMenuIndex)
                 {
                     case 0:
                         SensiSlider.value -= 5.0f;
-                        GameObject.Find("Character").GetComponent<PlayerLook>().SetSensitivity(SensiSlider.value);
+                        playerLook.SetSensitivity(SensiSlider.value);
                         break;
                     case 1:
                         VolSlider.value -= 5.0f;
@@ -124,15 +109,8 @@ public class ControlOptionMenu : MonoBehaviour
         if(currentMenuIndex == 2) currentMenuIndex = 0;
         else currentMenuIndex++;
 
-        for (int i = 0; i < 3; i++)
-        {
-            if(i == currentMenuIndex){
-                animatorManagers[i].OnCursorAnimator.SetBool("OnCursor", true);
-            }else{
-                animatorManagers[i].OnCursorAnimator.SetBool("OnCursor", false);
-                animatorManagers[i].OnCursorAnimator.SetTrigger("Reset");
-            }
-        }
+        //CursorAllowTextのY座標をMenuTexts[currentMenuIndex]のY座標に合わせる
+        CursorAllowText.transform.position = new Vector3(CursorAllowText.transform.position.x, MenuTexts[currentMenuIndex].transform.position.y, CursorAllowText.transform.position.z);
     }
 
     private void OnUpPerformed(InputAction.CallbackContext context){
@@ -142,15 +120,8 @@ public class ControlOptionMenu : MonoBehaviour
         if(currentMenuIndex == 0) currentMenuIndex = 2;
         else currentMenuIndex--;
 
-        for (int i = 0; i < 3; i++)
-        {
-            if(i == currentMenuIndex){
-                animatorManagers[i].OnCursorAnimator.SetBool("OnCursor", true);
-            }else{
-                animatorManagers[i].OnCursorAnimator.SetBool("OnCursor", false);
-                animatorManagers[i].OnCursorAnimator.SetTrigger("Reset");
-            }
-        }
+        //CursorAllowTextのY座標をMenuTexts[currentMenuIndex]のY座標に合わせる
+        CursorAllowText.transform.position = new Vector3(CursorAllowText.transform.position.x, MenuTexts[currentMenuIndex].transform.position.y, CursorAllowText.transform.position.z);
     }
 
     private void OnClickPerformed(InputAction.CallbackContext context){
@@ -163,8 +134,7 @@ public class ControlOptionMenu : MonoBehaviour
             case 1:
                 break;
             case 2:
-                animatorManagers[currentMenuIndex].OnClickAnimator.SetTrigger("OnClick");
-                MasterMenu masterMenu = GameObject.Find("MasterMenu").GetComponent<MasterMenu>();
+                CursorAnimator.SetTrigger("OnClicked");
                 masterMenu.CloseOptionMenu();
                 break;
         }

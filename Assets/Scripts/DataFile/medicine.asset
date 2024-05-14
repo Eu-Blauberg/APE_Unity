@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: medicine
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: a52116b1552623d4d9a82c7e276372a3, type: 3}
-  name: "\u5343\u91CC\u773C\u306E\u85AC"
+  itemName: "\u5343\u91CC\u773C\u306E\u85AC"
   description: "\u8996\u91CE\u304C\u5E83\u304C\u308B"
-  id: 2
+  num: 0

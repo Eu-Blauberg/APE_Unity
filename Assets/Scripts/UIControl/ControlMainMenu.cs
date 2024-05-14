@@ -10,12 +10,11 @@ public class ControlMainMenu : MonoBehaviour
     [SerializeField] InputActionAsset inputActionAsset;
     [SerializeField] GameObject CursorAllowText;
     [SerializeField] GameObject[] MenuTexts;
-
     
     private GameInputs gameInputs;
     private MasterMenu masterMenu;
 
-    [SerializeField]private int currentMenuIndex;
+    private int currentMenuIndex;
 
     //アクティブ時に呼び出される
     void OnEnable()
