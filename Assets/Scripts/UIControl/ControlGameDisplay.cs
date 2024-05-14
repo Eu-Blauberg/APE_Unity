@@ -9,8 +9,24 @@ public class ControlGameDisplay : MonoBehaviour
     [SerializeField] private Sprite onLifeSprite;
     [SerializeField] private Sprite offLifeSprite;
     [SerializeField] private Image[] inventoryImage = new Image[3];
-    [SerializeField] private Text[] inventoryNum = new Text[3];
+    [SerializeField] private Sprite nullSprite;
     [SerializeField] private ItemDataBase itemDataBase;
+
+    private PlayerData playerData;
+    private Text[] inventoryNum = new Text[3];
+
+    void Start()
+    {
+        for(int i = 0; i < inventoryImage.Length; i++)
+        {
+            inventoryNum[i] = inventoryImage[i].transform.GetChild(0).GetComponent<Text>();
+        }
+
+        //UIにライフを反映
+        UpdateLifeUI(3);
+        //UIにアイテムを反映
+        UpdateInventoryUI();
+    }
 
     //ライフUIの更新
     public void UpdateLifeUI(int life)
@@ -55,10 +71,8 @@ public class ControlGameDisplay : MonoBehaviour
             }
             else
             {
-                //アイテムの画像を非表示
-                inventoryImage[i].sprite = null;
-                //アイテムの個数を非表示
-                inventoryNum[i].text = null;
+                inventoryImage[i].sprite = nullSprite;
+                inventoryNum[i].text = "";
             }
         }
     }
