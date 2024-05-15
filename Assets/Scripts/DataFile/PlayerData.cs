@@ -2,18 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerData: MonoBehaviour
+public class PlayerData 
 {
-    public int life = 3;
-    public float speedRatio = 1;
+    private int life = 3;
     private float speedDownTime;
+    public float speed;
 
     [SerializeField] private ItemDataBase itemDataBase;
+    [SerializeField] private GameObject controlGameDisplayObj;
     private ControlGameDisplay controlGameDisplay;
 
     void Start()
     {
-        controlGameDisplay = GameObject.Find("GameDisplayManager").GetComponent<ControlGameDisplay>();
+        controlGameDisplay = controlGameDisplayObj.GetComponent<ControlGameDisplay>();
+        //UIにライフを反映
+        controlGameDisplay.UpdateLifeUI(life);
     }
 
     public void ReduceLife()
@@ -56,9 +59,9 @@ public class PlayerData: MonoBehaviour
 
     private IEnumerator SpeedDown()
     {
-        speedRatio /= 2;
+        speed /= 2;
         yield return new WaitForSeconds(speedDownTime);
-        speedRatio *= 2;
+        speed *= 2;
     }
 }
 

@@ -36,7 +36,7 @@ public class OpenMenu : MonoBehaviour
                 Time.timeScale = 1;
             }
         }
-        else if(Time.timeScale == 1)
+        else
         {
             // メニューを開く
             GameObject instantedMenuCanvas = Instantiate(menuCanvas);
