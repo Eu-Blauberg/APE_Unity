@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerLook : MonoBehaviour
 {
     public Transform cameraTransform; // カメラのTransform
-    public float lookSpeed = 200f; // 回転速度
+    public PlayerData playerData; // プレイヤーのデータ
     private Vector2 lookInput;
     private float xRotation = 0f; // カメラのX軸（上下）回転を制御するための変数
 
@@ -36,11 +36,11 @@ public class PlayerLook : MonoBehaviour
     {
         if(Time.timeScale == 0) return;
         // プレイヤーを左右に回転
-        float mouseX = lookInput.x * lookSpeed * Time.deltaTime;
+        float mouseX = lookInput.x * playerData.sensivity * Time.deltaTime;
         transform.Rotate(0, mouseX, 0);
 
         // カメラを上下に回転（X軸）
-        float mouseY = lookInput.y * lookSpeed * Time.deltaTime;
+        float mouseY = lookInput.y * playerData.sensivity * Time.deltaTime;
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
         cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
@@ -53,12 +53,12 @@ public class PlayerLook : MonoBehaviour
 
     public float GetSensitivity()
     {
-        return lookSpeed;
+        return playerData.sensivity;
     }
 
     public void SetSensitivity(float value)
     {
-        lookSpeed = value;
+        playerData.sensivity = value;
     }
 }
 

@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
@@ -9,6 +11,13 @@ public class Item : ScriptableObject
     public string itemName; // 名前
     public string description; // 情報
     public int num; // 個数
+    public ItemType itemType; // アイテムの種類å
+
+    public enum ItemType
+    {
+        Nomal,
+        TradeOnly,
+    }
 
     public Item(Item item)
     {

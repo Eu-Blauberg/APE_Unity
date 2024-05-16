@@ -7,17 +7,17 @@ using UnityEngine.InputSystem;
 
 public class DisplayOperation : MonoBehaviour
 {
-    [SerializeField] private GameObject Player;
     [SerializeField] private GameObject Rover;
     [SerializeField] private GameObject OperationText;
     [SerializeField] private GameObject TradeCanvas; // クリックアクション
     [SerializeField] InputActionAsset inputActionAsset;
+    [SerializeField] private PlayerData playerData;
 
     private const float distanceThreshold = 2.0f;
     private float distance;
     private bool isDisplayed = false;
-    private Vector2 PlayerPoint;
-    private Vector2 RoverPoint;
+    private Vector3 PlayerPoint;
+    private Vector3 RoverPoint;
     private GameInputs gameInputs;
 
 
@@ -35,8 +35,8 @@ public class DisplayOperation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerPoint = Player.GetComponent<Transform>().position;
-        distance = Vector2.Distance(PlayerPoint, RoverPoint);
+        PlayerPoint = playerData._position;
+        distance = Vector3.Distance(PlayerPoint, RoverPoint);
 
         if(distance < distanceThreshold && !isDisplayed)
         {
@@ -57,9 +57,10 @@ public class DisplayOperation : MonoBehaviour
 
     private void OnClickPerformed(InputAction.CallbackContext context)
     {
-        if(isDisplayed)
+        if(isDisplayed && Time.timeScale != 0)
         {
             GameObject instantedItemWindow = Instantiate(TradeCanvas);
+            instantedItemWindow.name = ("TradeCanvas");
             Time.timeScale = 0;
         }
     }

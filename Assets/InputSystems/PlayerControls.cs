@@ -15,14 +15,12 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-//namespace GameInputs
-//{
-    public partial class @GameInputs: IInputActionCollection2, IDisposable
+public partial class @GameInputs: IInputActionCollection2, IDisposable
+{
+    public InputActionAsset asset { get; }
+    public @GameInputs()
     {
-        public InputActionAsset asset { get; }
-        public @GameInputs()
-        {
-            asset = InputActionAsset.FromJson(@"{
+        asset = InputActionAsset.FromJson(@"{
     ""name"": ""PlayerControls"",
     ""maps"": [
         {
@@ -204,228 +202,227 @@ using UnityEngine.InputSystem.Utilities;
     ],
     ""controlSchemes"": []
 }");
-            // PlayerControls
-            m_PlayerControls = asset.FindActionMap("PlayerControls", throwIfNotFound: true);
-            m_PlayerControls_Move = m_PlayerControls.FindAction("Move", throwIfNotFound: true);
-            m_PlayerControls_Look = m_PlayerControls.FindAction("Look", throwIfNotFound: true);
-            m_PlayerControls_Menu = m_PlayerControls.FindAction("Menu", throwIfNotFound: true);
-            // UIControls
-            m_UIControls = asset.FindActionMap("UIControls", throwIfNotFound: true);
-            m_UIControls_Up = m_UIControls.FindAction("Up", throwIfNotFound: true);
-            m_UIControls_Down = m_UIControls.FindAction("Down", throwIfNotFound: true);
-            m_UIControls_Click = m_UIControls.FindAction("Click", throwIfNotFound: true);
-            m_UIControls_Right = m_UIControls.FindAction("Right", throwIfNotFound: true);
-            m_UIControls_Left = m_UIControls.FindAction("Left", throwIfNotFound: true);
-        }
-
-        public void Dispose()
-        {
-            UnityEngine.Object.Destroy(asset);
-        }
-
-        public InputBinding? bindingMask
-        {
-            get => asset.bindingMask;
-            set => asset.bindingMask = value;
-        }
-
-        public ReadOnlyArray<InputDevice>? devices
-        {
-            get => asset.devices;
-            set => asset.devices = value;
-        }
-
-        public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
-
-        public bool Contains(InputAction action)
-        {
-            return asset.Contains(action);
-        }
-
-        public IEnumerator<InputAction> GetEnumerator()
-        {
-            return asset.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public void Enable()
-        {
-            asset.Enable();
-        }
-
-        public void Disable()
-        {
-            asset.Disable();
-        }
-
-        public IEnumerable<InputBinding> bindings => asset.bindings;
-
-        public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
-        {
-            return asset.FindAction(actionNameOrId, throwIfNotFound);
-        }
-
-        public int FindBinding(InputBinding bindingMask, out InputAction action)
-        {
-            return asset.FindBinding(bindingMask, out action);
-        }
-
         // PlayerControls
-        private readonly InputActionMap m_PlayerControls;
-        private List<IPlayerControlsActions> m_PlayerControlsActionsCallbackInterfaces = new List<IPlayerControlsActions>();
-        private readonly InputAction m_PlayerControls_Move;
-        private readonly InputAction m_PlayerControls_Look;
-        private readonly InputAction m_PlayerControls_Menu;
-        public struct PlayerControlsActions
-        {
-            private @GameInputs m_Wrapper;
-            public PlayerControlsActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Move => m_Wrapper.m_PlayerControls_Move;
-            public InputAction @Look => m_Wrapper.m_PlayerControls_Look;
-            public InputAction @Menu => m_Wrapper.m_PlayerControls_Menu;
-            public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
-            public void Enable() { Get().Enable(); }
-            public void Disable() { Get().Disable(); }
-            public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(PlayerControlsActions set) { return set.Get(); }
-            public void AddCallbacks(IPlayerControlsActions instance)
-            {
-                if (instance == null || m_Wrapper.m_PlayerControlsActionsCallbackInterfaces.Contains(instance)) return;
-                m_Wrapper.m_PlayerControlsActionsCallbackInterfaces.Add(instance);
-                @Move.started += instance.OnMove;
-                @Move.performed += instance.OnMove;
-                @Move.canceled += instance.OnMove;
-                @Look.started += instance.OnLook;
-                @Look.performed += instance.OnLook;
-                @Look.canceled += instance.OnLook;
-                @Menu.started += instance.OnMenu;
-                @Menu.performed += instance.OnMenu;
-                @Menu.canceled += instance.OnMenu;
-            }
-
-            private void UnregisterCallbacks(IPlayerControlsActions instance)
-            {
-                @Move.started -= instance.OnMove;
-                @Move.performed -= instance.OnMove;
-                @Move.canceled -= instance.OnMove;
-                @Look.started -= instance.OnLook;
-                @Look.performed -= instance.OnLook;
-                @Look.canceled -= instance.OnLook;
-                @Menu.started -= instance.OnMenu;
-                @Menu.performed -= instance.OnMenu;
-                @Menu.canceled -= instance.OnMenu;
-            }
-
-            public void RemoveCallbacks(IPlayerControlsActions instance)
-            {
-                if (m_Wrapper.m_PlayerControlsActionsCallbackInterfaces.Remove(instance))
-                    UnregisterCallbacks(instance);
-            }
-
-            public void SetCallbacks(IPlayerControlsActions instance)
-            {
-                foreach (var item in m_Wrapper.m_PlayerControlsActionsCallbackInterfaces)
-                    UnregisterCallbacks(item);
-                m_Wrapper.m_PlayerControlsActionsCallbackInterfaces.Clear();
-                AddCallbacks(instance);
-            }
-        }
-        public PlayerControlsActions @PlayerControls => new PlayerControlsActions(this);
-
+        m_PlayerControls = asset.FindActionMap("PlayerControls", throwIfNotFound: true);
+        m_PlayerControls_Move = m_PlayerControls.FindAction("Move", throwIfNotFound: true);
+        m_PlayerControls_Look = m_PlayerControls.FindAction("Look", throwIfNotFound: true);
+        m_PlayerControls_Menu = m_PlayerControls.FindAction("Menu", throwIfNotFound: true);
         // UIControls
-        private readonly InputActionMap m_UIControls;
-        private List<IUIControlsActions> m_UIControlsActionsCallbackInterfaces = new List<IUIControlsActions>();
-        private readonly InputAction m_UIControls_Up;
-        private readonly InputAction m_UIControls_Down;
-        private readonly InputAction m_UIControls_Click;
-        private readonly InputAction m_UIControls_Right;
-        private readonly InputAction m_UIControls_Left;
-        public struct UIControlsActions
+        m_UIControls = asset.FindActionMap("UIControls", throwIfNotFound: true);
+        m_UIControls_Up = m_UIControls.FindAction("Up", throwIfNotFound: true);
+        m_UIControls_Down = m_UIControls.FindAction("Down", throwIfNotFound: true);
+        m_UIControls_Click = m_UIControls.FindAction("Click", throwIfNotFound: true);
+        m_UIControls_Right = m_UIControls.FindAction("Right", throwIfNotFound: true);
+        m_UIControls_Left = m_UIControls.FindAction("Left", throwIfNotFound: true);
+    }
+
+    public void Dispose()
+    {
+        UnityEngine.Object.Destroy(asset);
+    }
+
+    public InputBinding? bindingMask
+    {
+        get => asset.bindingMask;
+        set => asset.bindingMask = value;
+    }
+
+    public ReadOnlyArray<InputDevice>? devices
+    {
+        get => asset.devices;
+        set => asset.devices = value;
+    }
+
+    public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
+
+    public bool Contains(InputAction action)
+    {
+        return asset.Contains(action);
+    }
+
+    public IEnumerator<InputAction> GetEnumerator()
+    {
+        return asset.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    public void Enable()
+    {
+        asset.Enable();
+    }
+
+    public void Disable()
+    {
+        asset.Disable();
+    }
+
+    public IEnumerable<InputBinding> bindings => asset.bindings;
+
+    public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
+    {
+        return asset.FindAction(actionNameOrId, throwIfNotFound);
+    }
+
+    public int FindBinding(InputBinding bindingMask, out InputAction action)
+    {
+        return asset.FindBinding(bindingMask, out action);
+    }
+
+    // PlayerControls
+    private readonly InputActionMap m_PlayerControls;
+    private List<IPlayerControlsActions> m_PlayerControlsActionsCallbackInterfaces = new List<IPlayerControlsActions>();
+    private readonly InputAction m_PlayerControls_Move;
+    private readonly InputAction m_PlayerControls_Look;
+    private readonly InputAction m_PlayerControls_Menu;
+    public struct PlayerControlsActions
+    {
+        private @GameInputs m_Wrapper;
+        public PlayerControlsActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_PlayerControls_Move;
+        public InputAction @Look => m_Wrapper.m_PlayerControls_Look;
+        public InputAction @Menu => m_Wrapper.m_PlayerControls_Menu;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerControlsActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerControlsActions instance)
         {
-            private @GameInputs m_Wrapper;
-            public UIControlsActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Up => m_Wrapper.m_UIControls_Up;
-            public InputAction @Down => m_Wrapper.m_UIControls_Down;
-            public InputAction @Click => m_Wrapper.m_UIControls_Click;
-            public InputAction @Right => m_Wrapper.m_UIControls_Right;
-            public InputAction @Left => m_Wrapper.m_UIControls_Left;
-            public InputActionMap Get() { return m_Wrapper.m_UIControls; }
-            public void Enable() { Get().Enable(); }
-            public void Disable() { Get().Disable(); }
-            public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(UIControlsActions set) { return set.Get(); }
-            public void AddCallbacks(IUIControlsActions instance)
-            {
-                if (instance == null || m_Wrapper.m_UIControlsActionsCallbackInterfaces.Contains(instance)) return;
-                m_Wrapper.m_UIControlsActionsCallbackInterfaces.Add(instance);
-                @Up.started += instance.OnUp;
-                @Up.performed += instance.OnUp;
-                @Up.canceled += instance.OnUp;
-                @Down.started += instance.OnDown;
-                @Down.performed += instance.OnDown;
-                @Down.canceled += instance.OnDown;
-                @Click.started += instance.OnClick;
-                @Click.performed += instance.OnClick;
-                @Click.canceled += instance.OnClick;
-                @Right.started += instance.OnRight;
-                @Right.performed += instance.OnRight;
-                @Right.canceled += instance.OnRight;
-                @Left.started += instance.OnLeft;
-                @Left.performed += instance.OnLeft;
-                @Left.canceled += instance.OnLeft;
-            }
-
-            private void UnregisterCallbacks(IUIControlsActions instance)
-            {
-                @Up.started -= instance.OnUp;
-                @Up.performed -= instance.OnUp;
-                @Up.canceled -= instance.OnUp;
-                @Down.started -= instance.OnDown;
-                @Down.performed -= instance.OnDown;
-                @Down.canceled -= instance.OnDown;
-                @Click.started -= instance.OnClick;
-                @Click.performed -= instance.OnClick;
-                @Click.canceled -= instance.OnClick;
-                @Right.started -= instance.OnRight;
-                @Right.performed -= instance.OnRight;
-                @Right.canceled -= instance.OnRight;
-                @Left.started -= instance.OnLeft;
-                @Left.performed -= instance.OnLeft;
-                @Left.canceled -= instance.OnLeft;
-            }
-
-            public void RemoveCallbacks(IUIControlsActions instance)
-            {
-                if (m_Wrapper.m_UIControlsActionsCallbackInterfaces.Remove(instance))
-                    UnregisterCallbacks(instance);
-            }
-
-            public void SetCallbacks(IUIControlsActions instance)
-            {
-                foreach (var item in m_Wrapper.m_UIControlsActionsCallbackInterfaces)
-                    UnregisterCallbacks(item);
-                m_Wrapper.m_UIControlsActionsCallbackInterfaces.Clear();
-                AddCallbacks(instance);
-            }
+            if (instance == null || m_Wrapper.m_PlayerControlsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerControlsActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @Look.started += instance.OnLook;
+            @Look.performed += instance.OnLook;
+            @Look.canceled += instance.OnLook;
+            @Menu.started += instance.OnMenu;
+            @Menu.performed += instance.OnMenu;
+            @Menu.canceled += instance.OnMenu;
         }
-        public UIControlsActions @UIControls => new UIControlsActions(this);
-        public interface IPlayerControlsActions
+
+        private void UnregisterCallbacks(IPlayerControlsActions instance)
         {
-            void OnMove(InputAction.CallbackContext context);
-            void OnLook(InputAction.CallbackContext context);
-            void OnMenu(InputAction.CallbackContext context);
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @Look.started -= instance.OnLook;
+            @Look.performed -= instance.OnLook;
+            @Look.canceled -= instance.OnLook;
+            @Menu.started -= instance.OnMenu;
+            @Menu.performed -= instance.OnMenu;
+            @Menu.canceled -= instance.OnMenu;
         }
-        public interface IUIControlsActions
+
+        public void RemoveCallbacks(IPlayerControlsActions instance)
         {
-            void OnUp(InputAction.CallbackContext context);
-            void OnDown(InputAction.CallbackContext context);
-            void OnClick(InputAction.CallbackContext context);
-            void OnRight(InputAction.CallbackContext context);
-            void OnLeft(InputAction.CallbackContext context);
+            if (m_Wrapper.m_PlayerControlsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlayerControlsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PlayerControlsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PlayerControlsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
         }
     }
-//}
+    public PlayerControlsActions @PlayerControls => new PlayerControlsActions(this);
+
+    // UIControls
+    private readonly InputActionMap m_UIControls;
+    private List<IUIControlsActions> m_UIControlsActionsCallbackInterfaces = new List<IUIControlsActions>();
+    private readonly InputAction m_UIControls_Up;
+    private readonly InputAction m_UIControls_Down;
+    private readonly InputAction m_UIControls_Click;
+    private readonly InputAction m_UIControls_Right;
+    private readonly InputAction m_UIControls_Left;
+    public struct UIControlsActions
+    {
+        private @GameInputs m_Wrapper;
+        public UIControlsActions(@GameInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Up => m_Wrapper.m_UIControls_Up;
+        public InputAction @Down => m_Wrapper.m_UIControls_Down;
+        public InputAction @Click => m_Wrapper.m_UIControls_Click;
+        public InputAction @Right => m_Wrapper.m_UIControls_Right;
+        public InputAction @Left => m_Wrapper.m_UIControls_Left;
+        public InputActionMap Get() { return m_Wrapper.m_UIControls; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIControlsActions set) { return set.Get(); }
+        public void AddCallbacks(IUIControlsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UIControlsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIControlsActionsCallbackInterfaces.Add(instance);
+            @Up.started += instance.OnUp;
+            @Up.performed += instance.OnUp;
+            @Up.canceled += instance.OnUp;
+            @Down.started += instance.OnDown;
+            @Down.performed += instance.OnDown;
+            @Down.canceled += instance.OnDown;
+            @Click.started += instance.OnClick;
+            @Click.performed += instance.OnClick;
+            @Click.canceled += instance.OnClick;
+            @Right.started += instance.OnRight;
+            @Right.performed += instance.OnRight;
+            @Right.canceled += instance.OnRight;
+            @Left.started += instance.OnLeft;
+            @Left.performed += instance.OnLeft;
+            @Left.canceled += instance.OnLeft;
+        }
+
+        private void UnregisterCallbacks(IUIControlsActions instance)
+        {
+            @Up.started -= instance.OnUp;
+            @Up.performed -= instance.OnUp;
+            @Up.canceled -= instance.OnUp;
+            @Down.started -= instance.OnDown;
+            @Down.performed -= instance.OnDown;
+            @Down.canceled -= instance.OnDown;
+            @Click.started -= instance.OnClick;
+            @Click.performed -= instance.OnClick;
+            @Click.canceled -= instance.OnClick;
+            @Right.started -= instance.OnRight;
+            @Right.performed -= instance.OnRight;
+            @Right.canceled -= instance.OnRight;
+            @Left.started -= instance.OnLeft;
+            @Left.performed -= instance.OnLeft;
+            @Left.canceled -= instance.OnLeft;
+        }
+
+        public void RemoveCallbacks(IUIControlsActions instance)
+        {
+            if (m_Wrapper.m_UIControlsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IUIControlsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UIControlsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UIControlsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public UIControlsActions @UIControls => new UIControlsActions(this);
+    public interface IPlayerControlsActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
+        void OnMenu(InputAction.CallbackContext context);
+    }
+    public interface IUIControlsActions
+    {
+        void OnUp(InputAction.CallbackContext context);
+        void OnDown(InputAction.CallbackContext context);
+        void OnClick(InputAction.CallbackContext context);
+        void OnRight(InputAction.CallbackContext context);
+        void OnLeft(InputAction.CallbackContext context);
+    }
+}

@@ -13,10 +13,10 @@ public class ControlOptionMenu : MonoBehaviour
     [SerializeField] Slider SensiSlider;
     [SerializeField] Slider VolSlider;
     [SerializeField] InputActionAsset inputActionAsset;
+    [SerializeField] PlayerData playerData;
 
     private GameInputs gameInputs;
     private MasterMenu masterMenu;
-    private PlayerLook playerLook;
     private int currentMenuIndex;
     
     void OnEnable()
@@ -42,10 +42,9 @@ public class ControlOptionMenu : MonoBehaviour
         gameInputs.Enable();
 
         masterMenu = GameObject.Find("MasterMenu").GetComponent<MasterMenu>();
-        playerLook = GameObject.Find("Character(Clone)").GetComponent<PlayerLook>();
 
         //スライダーの初期値を設定
-        SensiSlider.value = playerLook.GetSensitivity();
+        SensiSlider.value = playerData.sensivity;
     }
 
     //非アクティブ時に呼び出される
@@ -67,7 +66,7 @@ public class ControlOptionMenu : MonoBehaviour
                 {
                     case 0:
                         SensiSlider.value += 5.0f;
-                        playerLook.SetSensitivity(SensiSlider.value);
+                        playerData.sensivity = SensiSlider.value;
                         break;
                     case 1:
                         VolSlider.value += 5.0f;
@@ -89,7 +88,7 @@ public class ControlOptionMenu : MonoBehaviour
                 {
                     case 0:
                         SensiSlider.value -= 5.0f;
-                        playerLook.SetSensitivity(SensiSlider.value);
+                        playerData.sensivity = SensiSlider.value;
                         break;
                     case 1:
                         VolSlider.value -= 5.0f;

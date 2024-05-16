@@ -53,4 +53,10 @@ public class ItemDataBase : ScriptableObject
     {
         items.Sort((a, b) => b.num - a.num);
     }
+
+    //アイテムの個数を取得
+    public int GetItemNum(Item item)
+    {
+        return item.num;
+    }
 }
