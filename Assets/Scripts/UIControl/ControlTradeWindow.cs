@@ -7,51 +7,52 @@ using UnityEngine.InputSystem;
 
 public class ControlTradeWindow: MonoBehaviour
 {
-    //アイテムウィンドウの各要素を格納する変数
-    [SerializeField] GameObject CursorAllowText;
     [SerializeField] InputActionAsset inputActionAsset;
     [SerializeField] ItemDataBase itemDataBase;
     [SerializeField] TradeRate tradeRate;
+    [SerializeField] Text CursorAllowText;
 
-    private Animator CursorAnimator;
     private GameInputs gameInputs;
     private int currentMenuIndex = 0; // 現在選択中のアイテムのインデックス
-    private int currentChoicesIndex = 0;   // 現在選択中の選択肢のインデックス
-
-    [SerializeField] private Image[] tradeItemImage; //アイテムの画像(0:売るアイテム, 1:買うアイテム)
-    [SerializeField] private Text[] optionText; //選択肢のテキスト(0:戻る, 1:買う)
-    [SerializeField] private Text menuIndexText; //現在選択中のアイテムのインデックスを表示するテキスト
-    [SerializeField] private Text[] itemNameText; //アイテムの名前を表示するテキスト(0:売るアイテム, 1:買うアイテム)
-    [SerializeField] private Text[] itemNumText; //アイテムの数を表示するテキスト(0:売るアイテム, 1:買うアイテム)
+    private int currentOptionIndex = 0;   // 現在選択中の選択肢のインデックス
+    private int i;
+    private float offset = -200.0f;
     
+    private Image[] tradeItemImage = new Image[2]; //アイテムの画像(0:売るアイテム, 1:買うアイテム)
+    private Text[] itemNameText = new Text[2]; //アイテムの名前を表示するテキスト(0:売るアイテム, 1:買うアイテム)
+    private Text[] itemNumText = new Text[2]; //売買のアイテム数を表示するテキスト(0:売るアイテム, 1:買うアイテム)
+    private Text menuIndexText; //現在選択中のア取引内容のインデックスを表示するテキスト
+
+    private Text[] optionText = new Text[2];  //選択肢のテキスト(0:戻る, 1:交換)
+    private Vector3[] optionPosition = new Vector3[2]; //選択肢の位置(0:戻る, 1:交換)
+    private Vector3 cursorPosition; //カーソルの位置
+
     /*
     オンオフでアイテムと選択肢の左右操作を切り替えるためのフラグ
     上下入力で切り替える
     trueの場合はcurrentMenuIndexが増減し,アイテムが切り替わる
-    falseの場合はcurrentChoicesIndexが増減し,選択肢が切り替わる
+    falseの場合はcurrentOptionIndexが増減し,選択肢が切り替わる
     */
     private bool isDown;
 
-    void OnEnable()
+    void Awake()
     {
-        currentMenuIndex = 0;
-        currentChoicesIndex = 0;
-        UpdateMenuWindow(currentMenuIndex);
-        isDown = false;
-        CursorAllowText.SetActive(false);
-
-        UpdateMenuIndexText();
-        UpdateMenuWindow(currentMenuIndex);
-
-        //戻るボタン選択中の場合のみカーソルを表示する
-        CursorAllowText.SetActive(false);
+        //各オブジェクトを取得
+        tradeItemImage[0] = GameObject.Find("SellItemImage").GetComponent<Image>();
+        tradeItemImage[1] = GameObject.Find("BuyItemImage").GetComponent<Image>();
+        optionText[0] = GameObject.Find("ReturnOptionText").GetComponent<Text>();
+        optionText[1] = GameObject.Find("TradeOptionText").GetComponent<Text>();
+        optionPosition[0] = GameObject.Find("ReturnOptionText").transform.position;
+        optionPosition[1] = GameObject.Find("TradeOptionText").transform.position;
+        itemNameText[0] = GameObject.Find("SellItemNameText").GetComponent<Text>();
+        itemNameText[1] = GameObject.Find("BuyItemNameText").GetComponent<Text>();
+        itemNumText[0] = GameObject.Find("SellNumText").GetComponent<Text>();
+        itemNumText[1] = GameObject.Find("BuyNumText").GetComponent<Text>();
+        menuIndexText = GameObject.Find("MenuIndexText").GetComponent<Text>();
     }
 
     void Start()
     {
-        //カーソルのアニメーターを取得
-        CursorAnimator = CursorAllowText.GetComponent<Animator>();
-
         //GameInputsを取得
         gameInputs = new GameInputs();
         if(gameInputs == null) Debug.Log("GameInputs is null");
@@ -65,6 +66,17 @@ public class ControlTradeWindow: MonoBehaviour
 
         //UIControlsを有効化
         gameInputs.Enable();
+
+        currentMenuIndex = 0;
+        currentOptionIndex = 0;
+        isDown = false;
+
+        UpdateMenuIndexText();
+        UpdateMenuWindow(currentMenuIndex);
+
+        if(CursorAllowText == null) Debug.Log("CursorAllowText is null");
+
+        CursorAllowText.text = "";
     }
 
     //非アクティブ時に呼び出される
@@ -76,13 +88,15 @@ public class ControlTradeWindow: MonoBehaviour
     private void OnRightPerformed(InputAction.CallbackContext context){
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         if(isDown){
-            //選択肢の右移動
-            if(currentChoicesIndex == optionText.Length - 1) currentChoicesIndex = 0;
-            else currentChoicesIndex++;
-            Debug.Log("Right");
-            float offset = 100.0f;
-            //CUrsorAllowTextの座標を選択肢に合わせる
-            CursorAnimator.transform.position = new Vector3(optionText[currentChoicesIndex].transform.position.x - offset , optionText[currentChoicesIndex].transform.position.y, 0);
+            //選択肢の右移動(アイテムが売買できない場合はcurrentOptionIndexが0のままになる)
+            if(CanTradeItem() == false) currentOptionIndex = 0;
+            else if(currentOptionIndex == 0) currentOptionIndex = 1;
+            else currentOptionIndex = 0;
+
+            Debug.Log("Option Right (" + currentOptionIndex + ")");
+
+            //CursorAllowTextTextの座標を選択肢に合わせる
+            CursorAllowText.transform.position = new Vector3(optionPosition[currentOptionIndex].x + offset, optionPosition[currentOptionIndex].y, optionPosition[currentOptionIndex].z);
             UpdateMenuIndexText();
         }
         else
@@ -90,17 +104,8 @@ public class ControlTradeWindow: MonoBehaviour
             //アイテムの右移動
             if(currentMenuIndex == tradeRate.tradeRates.Count - 1) currentMenuIndex = 0;
             else currentMenuIndex++;
-            Debug.Log("Right");
-            if(CanTradeItem() == false)
-            {
-                //アイテムが売買できなければ購入テキストの透明度を下げる
-                optionText[1].color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-            }
-            else
-            {
-                //アイテムが売買できれば購入テキストの透明度を上げる
-                optionText[1].color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            }
+            Debug.Log("Trade Right (" + currentMenuIndex + ")");
+
             UpdateMenuWindow(currentMenuIndex);
             UpdateMenuIndexText();
         }
@@ -109,13 +114,14 @@ public class ControlTradeWindow: MonoBehaviour
     private void OnLeftPerformed(InputAction.CallbackContext context){
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         if(isDown){
-            //選択肢の左移動
-            if(currentChoicesIndex == 0) currentChoicesIndex = optionText.Length - 1;
-            else currentChoicesIndex--;
-            Debug.Log("Left");
-            float offset = 100.0f;
-            //CUrsorAllowTextの座標を選択肢に合わせる
-            CursorAnimator.transform.position = new Vector3(optionText[currentChoicesIndex].transform.position.x - offset , optionText[currentChoicesIndex].transform.position.y, 0);
+            //選択肢の左移動(アイテムが売買できない場合はcurrentOptionIndexが0のままになる)
+            if(CanTradeItem() == false) currentOptionIndex = 0;
+            else if(currentOptionIndex == 0) currentOptionIndex = 1;
+            else currentOptionIndex = 0;
+
+            Debug.Log("Option Left (" + currentOptionIndex + ")");
+            //CursorAllowTextTextの座標を選択肢に合わせる
+            CursorAllowText.transform.position = new Vector3(optionPosition[currentOptionIndex].x + offset, optionPosition[currentOptionIndex].y, optionPosition[currentOptionIndex].z);
             UpdateMenuIndexText();
         }
         else
@@ -123,17 +129,8 @@ public class ControlTradeWindow: MonoBehaviour
             //アイテムの左移動
             if(currentMenuIndex == 0) currentMenuIndex = tradeRate.tradeRates.Count - 1;
             else currentMenuIndex--;
-            Debug.Log("Left");
-            if(CanTradeItem() == false)
-            {
-                //アイテムが売買できなければ購入テキストの透明度を下げる
-                optionText[1].color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
-            }
-            else
-            {
-                //アイテムが売買できれば購入テキストの透明度を上げる
-                optionText[1].color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-            }
+            Debug.Log("Trade Left (" + currentMenuIndex + ")");
+
             UpdateMenuWindow(currentMenuIndex);
             UpdateMenuIndexText();
         }
@@ -145,7 +142,7 @@ public class ControlTradeWindow: MonoBehaviour
 
         isDown = true;
 
-        CursorAllowText.SetActive(true);
+        CursorAllowText.text = "→";
     }
 
     private void OnUpPerformed(InputAction.CallbackContext context){
@@ -153,9 +150,9 @@ public class ControlTradeWindow: MonoBehaviour
         Debug.Log("Up");
 
         isDown = false;
-        currentChoicesIndex = 0;
+        currentOptionIndex = 0;
 
-        CursorAllowText.SetActive(false);
+        CursorAllowText.text = "";
     }
 
     private void OnClickPerformed(InputAction.CallbackContext context){
@@ -165,19 +162,29 @@ public class ControlTradeWindow: MonoBehaviour
         Debug.Log("Click");
 
         //選択肢の処理
-        switch(currentChoicesIndex)
+        switch(currentOptionIndex)
         {
             case 0:
                 //親のオブジェクトを取得
                 var _gameObject = GameObject.Find("TradeCanvas");
                 Destroy(_gameObject);
+                Time.timeScale = 1.0f;
                 break;
             case 1:
                 if(CanTradeItem() == false) break;
                 else TradeTtem(); //アイテムを買う
-                break;
-            case 2:
-                //戻る
+
+                if(CanTradeItem() == false) 
+                {
+                    CursorAllowText.text = "";
+                    isDown = false;
+                    currentOptionIndex = 0;
+                    CursorAllowText.transform.position = new Vector3(optionPosition[currentOptionIndex].x + offset, optionPosition[currentOptionIndex].y, optionPosition[currentOptionIndex].z);
+                }
+
+                //アイテムの情報を更新
+                UpdateMenuWindow(currentMenuIndex);
+
                 break;
         }
     }
@@ -185,15 +192,19 @@ public class ControlTradeWindow: MonoBehaviour
     //アイテムウィンドウの情報を更新する
     private void UpdateMenuWindow(int index)
     {
-        //売るアイテムの情報を表示
+        //売るアイテム
         tradeItemImage[0].sprite = tradeRate.tradeRates[index].SellItem.icon;
         itemNameText[0].text = tradeRate.tradeRates[index].SellItem.itemName;
         itemNumText[0].text = tradeRate.tradeRates[index].SellNum.ToString();
 
-        //買うアイテムの情報を表示
+        //買うアイテム
         tradeItemImage[1].sprite = tradeRate.tradeRates[index].BuyItem.icon;
         itemNameText[1].text = tradeRate.tradeRates[index].BuyItem.itemName;
         itemNumText[1].text = tradeRate.tradeRates[index].BuyNum.ToString();
+
+        //アイテムが売買できない場合はoptinText[1]を空にする
+        if(CanTradeItem() == false) optionText[1].text = "";
+        else optionText[1].text = "交換";
     }
 
     private void UpdateMenuIndexText()

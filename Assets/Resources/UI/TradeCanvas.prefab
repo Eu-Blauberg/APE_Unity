@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3629489810481525422}
   - component: {fileID: 3250664873695259494}
   m_Layer: 5
-  m_Name: ItemNameText
+  m_Name: SellItemNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -272,7 +272,7 @@ GameObject:
   - component: {fileID: 3686276421956025029}
   - component: {fileID: 925928145451560541}
   m_Layer: 5
-  m_Name: ItemNameText
+  m_Name: BuyItemNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -384,23 +384,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39d6463e6e0a446b4adfff54a9abd19b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CursorAllowText: {fileID: 6777492882505021738}
   inputActionAsset: {fileID: -944628639613478452, guid: eb50905b7d2444c69bc771ce8e0cf4bc, type: 3}
   itemDataBase: {fileID: 11400000, guid: 0a625fa10fc31431292984d7d4609097, type: 2}
   tradeRate: {fileID: 11400000, guid: 7ec52d33b187c4f318ea8b795dba1ba4, type: 2}
-  tradeItemImage:
-  - {fileID: 224904106969723193}
-  - {fileID: 6684971170683343913}
-  optionText:
-  - {fileID: 2523559694769759138}
-  - {fileID: 6455749886322802131}
-  menuIndexText: {fileID: 3614176907816110260}
-  itemNameText:
-  - {fileID: 3250664873695259494}
-  - {fileID: 925928145451560541}
-  itemNumText:
-  - {fileID: 5471602885732317028}
-  - {fileID: 3535702267170636593}
+  CursorAllowText: {fileID: 6159075903570419341}
 --- !u!1 &4427724890113502660
 GameObject:
   m_ObjectHideFlags: 0
@@ -650,7 +637,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5000402432539544679}
-  - component: {fileID: 6245393773529637940}
   m_Layer: 0
   m_Name: ItemMenuTexts
   m_TagString: Untagged
@@ -681,31 +667,6 @@ Transform:
   m_Father: {fileID: 7799304725098171169}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6245393773529637940
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5804439324559565221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39d6463e6e0a446b4adfff54a9abd19b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CursorAllowText: {fileID: 6777492882505021738}
-  inputActionAsset: {fileID: -944628639613478452, guid: eb50905b7d2444c69bc771ce8e0cf4bc, type: 3}
-  itemDataBase: {fileID: 11400000, guid: 0a625fa10fc31431292984d7d4609097, type: 2}
-  tradeRate: {fileID: 11400000, guid: 7ec52d33b187c4f318ea8b795dba1ba4, type: 2}
-  tradeItemImage:
-  - {fileID: 224904106969723193}
-  - {fileID: 6684971170683343913}
-  optionText:
-  - {fileID: 0}
-  - {fileID: 0}
-  menuIndexText: {fileID: 0}
-  itemNameText: []
-  itemNumText: []
 --- !u!1 &5829032929521397848
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,7 +839,7 @@ GameObject:
   - component: {fileID: 3727163016443794377}
   - component: {fileID: 224904106969723193}
   m_Layer: 5
-  m_Name: SaleItemImage
+  m_Name: SellItemImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1298,7 +1259,7 @@ GameObject:
   - component: {fileID: 4078418460374589466}
   - component: {fileID: 5471602885732317028}
   m_Layer: 5
-  m_Name: SaleNumText
+  m_Name: SellNumText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
