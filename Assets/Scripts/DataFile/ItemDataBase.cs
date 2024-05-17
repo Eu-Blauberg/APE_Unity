@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "ItemDataBase", menuName = "CreateItemDataBase")]
 public class ItemDataBase : ScriptableObject
 {
     public List<Item> items = new List<Item>();
 
+    //アイテムを追加
     public void AddItem(Item item)
     {
         //itemsにitemがある場合
@@ -20,12 +22,12 @@ public class ItemDataBase : ScriptableObject
             //itemsにitemがない場合
             //itemをitemsに追加
             items.Add(item);
-            Debug.Log("AddItem(" + item.itemName + ")");
         }
 
         SortItem();
     }
 
+    //アイテムを削除
     public void RemoveItem(Item item)
     {
         //itemsにitemがある場合
@@ -40,9 +42,7 @@ public class ItemDataBase : ScriptableObject
             else
             {
                 //itemの個数が0の場合
-                //itemsからitemを削除
-                items.Remove(item);
-                Debug.Log("RemoveItem(" + item.itemName + ")");
+                return;
             }
         }
         SortItem();
@@ -58,5 +58,11 @@ public class ItemDataBase : ScriptableObject
     public int GetItemNum(Item item)
     {
         return item.num;
+    }
+
+    //アイテムの種類でアイテムを取得
+    public List<Item> GetItemByType(Item.ItemType itemType)
+    {
+        return items.FindAll(item => item.itemType == itemType);
     }
 }

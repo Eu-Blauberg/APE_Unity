@@ -15,5 +15,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: a52116b1552623d4d9a82c7e276372a3, type: 3}
   itemName: "\u5343\u91CC\u773C\u306E\u85AC"
   description: "\u8996\u91CE\u304C\u5E83\u304C\u308B"
-  num: 4
+  num: 0
   itemType: 0
+  itemRarity: 1
+  rarity: 0
