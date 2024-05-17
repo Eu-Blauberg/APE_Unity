@@ -19,7 +19,7 @@ public class GoalCollision : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(Terminal == false) SetEntity();
     }
     
     void OnCollisionEnter(Collision collision){
@@ -28,7 +28,6 @@ public class GoalCollision : MonoBehaviour
             // prepare UI to make Decision about forward or not !!
             // END OF UI CONFIG
             if(Terminal == true) Destroy(Terminal);
-            
         }
     }
     

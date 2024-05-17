@@ -8,9 +8,9 @@ using UnityEngine;
 public class MazeCreater : MonoBehaviour
 {   
     // 各ブロックの親要素のロード
-    GameObject WallBlock;
-    GameObject FloorBlock;
-    GameObject StairBlock;
+    private GameObject WallBlock;
+    private GameObject FloorBlock;
+    private GameObject StairBlock;
 
     private int mazeSize = 21;
     private const int mazeStagnationStepsLimit = 4;
@@ -18,6 +18,7 @@ public class MazeCreater : MonoBehaviour
 
 
     private byte[][] mazeMap;
+    private byte[][] MazeFullyBinaryMap;
     private int initial_y;
     private int initial_x;
 
@@ -29,7 +30,6 @@ public class MazeCreater : MonoBehaviour
     
     public void mazeCreate()
     {
-        Debug.Log("MazeCreater.cs Start");
         WallBlock = Instantiate((GameObject)Resources.Load("wall"));
         FloorBlock = Instantiate((GameObject)Resources.Load("floor"));
         StairBlock = Instantiate((GameObject)Resources.Load("stair"));
@@ -40,7 +40,8 @@ public class MazeCreater : MonoBehaviour
         //大きさがmazeSizeの正方行列を作成
         for (int i = 0; i < mazeSize; i++) mazeMap[i] = mazeMapEachLen.Clone() as byte[];
         //仮想的なバイナリマップを取得
-        byte[][] MazeFullyBinaryMap = ReturnVirtualBinaryMap(mazeMap);
+        MazeFullyBinaryMap = ReturnVirtualBinaryMap(mazeMap);
+        Debug.Log("MazeFullyBinaryMap is completed");
         //実際に3D空間にブロックを配置する
         Fix3DMaze(MazeFullyBinaryMap);
     }
@@ -163,22 +164,52 @@ public class MazeCreater : MonoBehaviour
         return mazeBinaryMap;
     }
 
-    private int[] Return_xy(){
+    public int[] Return_xy(){
 
         int[] initial_xy = new int[2];
+        int primarily_x;
+        int primarily_y;
 
         //初期位置を仮決定
-        int initial_x = GiveSmallerThanMaxValue(mazeSize);
-        int initial_y = GiveSmallerThanMaxValue(mazeSize);
+        primarily_x = GiveSmallerThanMaxValue(mazeSize);
+        primarily_y = GiveSmallerThanMaxValue(mazeSize);
 
         //初期位置について，例外を解決
-        if(initial_x <= 2) initial_x += 2;
-        if(initial_x >= mazeSize-2) initial_x -= 2;
-        if(initial_y <= 2) initial_y += 2;
-        if(initial_y >= mazeSize-2) initial_y -= 2;
+        if(primarily_x <= 2) primarily_x += 2;
+        if(primarily_x >= mazeSize-2) primarily_x -= 2;
+        if(primarily_y <= 2) primarily_y += 2;
+        if(primarily_y >= mazeSize-2) primarily_y -= 2;
 
-        initial_xy[0] = initial_y;
-        initial_xy[1] = initial_x;
+        initial_xy[0] = primarily_y;
+        initial_xy[1] = primarily_x;
+
+        return initial_xy;
+    }
+
+    public int[] Return_Secure_xy(){
+        
+        int[] initial_xy = new int[2];
+        int primarily_x;
+        int primarily_y;
+
+        while(true){
+            //初期位置を仮決定
+            primarily_x = GiveSmallerThanMaxValue(mazeSize);
+            primarily_y = GiveSmallerThanMaxValue(mazeSize);
+
+            //初期位置について，例外を解決
+            if(primarily_x <= 2) primarily_x += 2;
+            if(primarily_x >= mazeSize-2) primarily_x -= 2;
+            if(primarily_y <= 2) primarily_y += 2;
+            if(primarily_y >= mazeSize-2) primarily_y -= 2;
+
+            if(MazeFullyBinaryMap == null) Debug.Log("null");
+            else Debug.Log("no - null");
+            if(MazeFullyBinaryMap[primarily_y][primarily_x] == 1) break;
+        }
+        initial_xy[0] = primarily_y;
+        initial_xy[1] = primarily_x;
+
         return initial_xy;
     }
 
@@ -245,14 +276,13 @@ public class MazeCreater : MonoBehaviour
                     floor.transform.localScale = new Vector3(RouteScale,RouteScale,RouteScale);
                     floor.transform.parent = FloorBlock.transform;
                 }
-
             }
         }
     }
 
     // ここで，該当階層踏破後のパラメータの更新を行う．
     private void MazeParamsUpdater(){
-        mazeSize += 5;
+        if(floorNumber % 2 != 0) mazeSize += 2;
         floorNumber += 1;
         // 必要に応じて書き足していく
     }
@@ -266,15 +296,21 @@ public class MazeCreater : MonoBehaviour
     
     
     public void MazeReCreate(){
+        Debug.Log(floorNumber);
         // 迷路の初期化処理を開始
-        MazeInitialize();
         MazeParamsUpdater();
-        mazeMap = new byte[mazeSize][];
-        byte[] mazeMapEachLen = Enumerable.Repeat<byte>(0,mazeSize).ToArray();
-        for (int i = 0; i < mazeSize; i++) mazeMap[i] = mazeMapEachLen.Clone() as byte[];
-        byte[][] MazeFullyBinaryMap = ReturnVirtualBinaryMap(mazeMap);
-        // 迷路の初期化処理を終了
-        Fix3DMaze(MazeFullyBinaryMap);
+        Debug.Log("params updated");
+        if(floorNumber % 2 != 0){
+            Debug.Log("Remaze");
+            MazeInitialize();
+            mazeMap = new byte[mazeSize][];
+            byte[] mazeMapEachLen = Enumerable.Repeat<byte>(0,mazeSize).ToArray();
+            for (int i = 0; i < mazeSize; i++) mazeMap[i] = mazeMapEachLen.Clone() as byte[];
+            byte[][] MazeFullyBinaryMap = ReturnVirtualBinaryMap(mazeMap);
+            // 迷路の初期化処理を終了
+            Fix3DMaze(MazeFullyBinaryMap);
+        }
+
     }
 
     public int GetInitialSpownCoordinate_x(){

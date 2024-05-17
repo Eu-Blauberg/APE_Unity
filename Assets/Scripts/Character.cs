@@ -14,7 +14,6 @@ public class Character : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("Character Start");
         Application.targetFrameRate = 60;
     }
 
@@ -44,7 +43,6 @@ public class Character : MonoBehaviour
         this.initial_y = initial_y;
         this.RouteScale = RouteScale;
         instantedMainCharacter.transform.position = new Vector3(initial_y*RouteScale,1*RouteScale,initial_x*RouteScale);
-        Debug.Log("Set end");
     }
 
     public void SetInstans(GameObject character){
@@ -54,6 +52,4 @@ public class Character : MonoBehaviour
     public void SwitchActivator(bool state){
         instantedMainCharacter.gameObject.SetActive(state);
     }
-    
-
 }
