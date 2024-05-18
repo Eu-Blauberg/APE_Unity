@@ -41,5 +41,40 @@ public class PlayerMove : MonoBehaviour
         transform.Translate(move);
 
         playerData._position = transform.position;
+
+        /*
+        キーボードの入力によってプレイヤーを移動させる処理
+        */
+        if (Input.GetKey(KeyCode.Space))
+        {
+            //上矢印キーが押された場合
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                //プレイヤーを前進させる
+                transform.position += transform.forward * playerData.speed * Time.deltaTime;
+            }
+
+            //下矢印キーが押された場合
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                //プレイヤーを後退させる
+                transform.position -= transform.forward * playerData.speed * Time.deltaTime;
+            }
+
+            //左矢印キーが押された場合
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                //プレイヤーを左に移動させる
+                transform.position -= transform.right * playerData.speed * Time.deltaTime;
+            }
+
+            //右矢印キーが押された場合
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                //プレイヤーを右に移動させる
+                transform.position += transform.right * playerData.speed * Time.deltaTime;
+            }
+        }
     }
+
 }
