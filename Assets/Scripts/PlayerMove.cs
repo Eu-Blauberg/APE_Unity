@@ -5,9 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerMove : MonoBehaviour
 {
-
-    public float speed = 5.0f;
     public InputActionAsset inputActionAsset;
+    public PlayerData playerData;
     private InputAction moveAction;
     private Vector2 moveInput;
 
@@ -37,7 +36,10 @@ public class PlayerMove : MonoBehaviour
     }
 
     void FixedUpdate(){
-        Vector3 move = new Vector3(moveInput.x, 0, moveInput.y) * speed * Time.deltaTime;
+        if(Time.timeScale == 0) return;
+        Vector3 move = new Vector3(moveInput.x, 0, moveInput.y) * playerData.speed * Time.deltaTime;
         transform.Translate(move);
+
+        playerData._position = transform.position;
     }
 }

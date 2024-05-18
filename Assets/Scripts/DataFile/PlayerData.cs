@@ -1,36 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class PlayerData : MonoBehaviour
+[System.Serializable]
+[CreateAssetMenu(fileName = "PlayerData", menuName = "CreatePlayerData")]
+public class PlayerData : ScriptableObject
 {
-    //体力
     public int life;
-    //取得したアイテムを保持するリスト
-    public List<Item> holdItems = new List<Item>();
+    public float speed;
+    public float sensivity;
+    public Vector3 _position;
 
-    //アイテムを取得するメソッド
-    public void GetItem(Item item)
+    public PlayerData(int life, float speed, float sensivity, Vector3 _position)
     {
-        if (holdItems.Contains(item))
-        {
-            //アイテムを持っている場合は個数を増やす
-            item.num++;
-        }
-        holdItems.Add(item);
-    }
-
-    //アイテムを使用するメソッド
-    public void UseItem(Item item)
-    {
-        if (holdItems.Contains(item))
-        {
-            //アイテムを持っている場合は個数を減らす
-            item.num--;
-            if (item.num <= 0)
-            {
-                holdItems.Remove(item);
-            }
-        }
+        this.life = life;
+        this.speed = speed;
+        this.sensivity = sensivity;
+        this._position = _position;
     }
 }
