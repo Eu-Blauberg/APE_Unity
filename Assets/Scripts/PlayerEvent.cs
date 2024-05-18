@@ -44,7 +44,7 @@ public class PlayerEvent : MonoBehaviour
             controlGameDisplay.UpdateInventoryUI();
 
             //テキスト表示
-            StartCoroutine(DisplayNoticeText("シールドを使った"));
+            StartCoroutine(DisplayNoticeText("バリアを使った"));
 
             //ダメージを再度受けるまでの間隔を設定
             StartCoroutine(DamageInterval());
