@@ -108,17 +108,6 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Item"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ec2f875a-1445-4ed9-aaa5-1f5f2a9e54f9"",
-                    ""path"": ""<Keyboard>/enter"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Item"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         },
