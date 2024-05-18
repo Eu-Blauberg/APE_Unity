@@ -15,6 +15,7 @@ public class Ghost : MonoBehaviour
     private bool        isFollowing; //プレイヤー追従フラグ
     private int         mazeSize;
     private float       RouteScale;
+    //
     
 
     void Start()
