@@ -8,6 +8,7 @@ TagManager:
   - NoticeText
   - GameDisplayMaster
   - Enemy
+  - Goal
   layers:
   - Default
   - TransparentFX
