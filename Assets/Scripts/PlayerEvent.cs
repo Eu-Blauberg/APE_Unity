@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class PlayerEvent : MonoBehaviour
 {
     [SerializeField] PlayerData playerData;
+    [SerializeField] ItemDataBase itemDataBase;
     [SerializeField] private GameObject damageEffectPanel;
+    [SerializeField] private Text noticeText;
 
     private Sprite damageEffectSprite;
     private Sprite NullSprite;
@@ -33,24 +35,41 @@ public class PlayerEvent : MonoBehaviour
         //衝突したオブジェクトが敵でない場合は処理を終了
         if (!collision.gameObject.CompareTag("Enemy")) return;
 
-        //プレイヤーのライフを減らす
-        playerData.life --;
-
-        //ライフUIを更新
-        controlGameDisplay.UpdateLifeUI();
-
-        //ダメージ
-        StartCoroutine(DisplayDamageEffect());
-
-        //ダメージを再度受けるまでの間隔を設定
-        StartCoroutine(DamageInterval());
-
-        //プレイヤーのライフが0以下の場合
-        if (playerData.life <= 0)
+        if(itemDataBase.GetItemNum(itemDataBase.GetItemByName("バリア")) > 0)
         {
-            /*
-            ゲームオーバー処理
-            */
+            //シールドを持っている場合
+            //シールドを削除
+            itemDataBase.RemoveItem(itemDataBase.GetItemByName("バリア"));
+            //インベントリUIを更新
+            controlGameDisplay.UpdateInventoryUI();
+
+            //テキスト表示
+            StartCoroutine(DisplayNoticeText("シールドを使った"));
+
+            //ダメージを再度受けるまでの間隔を設定
+            StartCoroutine(DamageInterval());
+            return;
+        }
+        else{
+            //プレイヤーのライフを減らす
+            playerData.life --;
+
+            //ライフUIを更新
+            controlGameDisplay.UpdateLifeUI();
+
+            //ダメージ
+            StartCoroutine(DisplayDamageEffect());
+
+            //ダメージを再度受けるまでの間隔を設定
+            StartCoroutine(DamageInterval());
+
+            //プレイヤーのライフが0以下の場合
+            if (playerData.life <= 0)
+            {
+                /*
+                ゲームオーバー処理
+                */
+            }
         }
     }
 
@@ -79,4 +98,13 @@ public class PlayerEvent : MonoBehaviour
 
         damageEffectPanel.GetComponent<Image>().sprite = NullSprite;
     }
+
+    //アイテムを使った時のテキスト表示
+    public IEnumerator DisplayNoticeText(string message)
+    {
+        noticeText.text = message;
+        yield return new WaitForSeconds(3.0f);
+        noticeText.text = "";
+    }
+
 }

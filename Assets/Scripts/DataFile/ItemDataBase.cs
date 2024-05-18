@@ -65,4 +65,10 @@ public class ItemDataBase : ScriptableObject
     {
         return items.FindAll(item => item.itemType == itemType);
     }
+
+    //アイテムの名前でアイテムを取得
+    public Item GetItemByName(string itemName)
+    {
+        return items.Find(item => item.itemName == itemName);
+    }
 }

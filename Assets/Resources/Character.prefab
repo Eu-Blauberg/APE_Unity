@@ -1836,7 +1836,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: 3d95a86763d6e4b59a03e15a693d37e3, type: 2}
+  itemDataBase: {fileID: 11400000, guid: 0a625fa10fc31431292984d7d4609097, type: 2}
   damageEffectPanel: {fileID: 763959642788809019}
+  noticeText: {fileID: 3573930204475480230}
 --- !u!1 &8381843143171766022
 GameObject:
   m_ObjectHideFlags: 0
