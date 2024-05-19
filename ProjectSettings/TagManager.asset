@@ -9,6 +9,8 @@ TagManager:
   - GameDisplayMaster
   - Enemy
   - Goal
+  - CompassManager
+  - EventSystem
   layers:
   - Default
   - TransparentFX
