@@ -18,6 +18,11 @@ public class ControlGameDisplay : MonoBehaviour
     {
         UpdateLifeUI();
         UpdateInventoryUI();
+
+        playerData.life = 3;
+
+        // プレイヤーのライフを更新
+        UpdateLifeUI();
     }
     
     //ライフUIの更新

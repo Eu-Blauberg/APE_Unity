@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1003ca47aa6c74078964e48d537eb967, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  life: 3
+  life: 0
   speed: 5
   sensivity: 255
-  _position: {x: 26, y: 2.5, z: 48}
+  _position: {x: -0.4999998, y: 1, z: 2.5026345}
