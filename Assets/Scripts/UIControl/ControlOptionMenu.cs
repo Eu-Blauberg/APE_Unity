@@ -69,8 +69,8 @@ public class ControlOptionMenu : MonoBehaviour
                         playerData.sensivity = SensiSlider.value;
                         break;
                     case 1:
-                        VolSlider.value += 5.0f;
-                        //音量の設定を追加
+                        VolSlider.value += 0.1f;
+                        AoudioListener.volume = VolSlider.value;
                         break;
                     case 2:
                         break;
@@ -91,8 +91,8 @@ public class ControlOptionMenu : MonoBehaviour
                         playerData.sensivity = SensiSlider.value;
                         break;
                     case 1:
-                        VolSlider.value -= 5.0f;
-                        //音量の設定を追加
+                        VolSlider.value -= 0.1f;
+                        AoudioListener.volume = VolSlider.value;
                         break;
                     case 2:
                         break;
