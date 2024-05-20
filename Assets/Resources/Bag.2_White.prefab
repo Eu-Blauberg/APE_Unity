@@ -11,10 +11,11 @@ GameObject:
   - component: {fileID: 7540733900388201598}
   - component: {fileID: 1584448176154037832}
   - component: {fileID: 5098530336714175153}
-  - component: {fileID: 6974301712680677996}
+  - component: {fileID: 5029358641976414469}
+  - component: {fileID: 8367927060859542486}
   m_Layer: 0
   m_Name: Bag.2_White
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 6844706582772876909}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -84,17 +85,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6974301712680677996
-MeshCollider:
+--- !u!114 &5029358641976414469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6844706582772876909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad300cb4b1033467a944db27fe4c4fb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemDataBase: {fileID: 11400000, guid: 0a625fa10fc31431292984d7d4609097, type: 2}
+--- !u!135 &8367927060859542486
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6844706582772876909}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 1683004135272489849, guid: 2fd9acdc43206ee42ae6f1a706872c6e, type: 3}
+  serializedVersion: 2
+  m_Radius: 1.3304543
+  m_Center: {x: 0.32338342, y: -0.7668009, z: 0.09030151}

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+
 public class ControlOptionMenu : MonoBehaviour
 {
     [SerializeField] Animator CursorAnimator;
@@ -70,7 +71,7 @@ public class ControlOptionMenu : MonoBehaviour
                         break;
                     case 1:
                         VolSlider.value += 0.1f;
-                        AoudioListener.volume = VolSlider.value;
+                        AudioListener.volume = VolSlider.value;
                         break;
                     case 2:
                         break;
@@ -92,7 +93,7 @@ public class ControlOptionMenu : MonoBehaviour
                         break;
                     case 1:
                         VolSlider.value -= 0.1f;
-                        AoudioListener.volume = VolSlider.value;
+                        AudioListener.volume = VolSlider.value;
                         break;
                     case 2:
                         break;

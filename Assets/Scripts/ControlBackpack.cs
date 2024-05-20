@@ -31,12 +31,13 @@ public class ControlBackpack : MonoBehaviour
         ControlGameDisplay controlGameDisplay = GameObject.FindWithTag("GameDisplayMaster").GetComponent<ControlGameDisplay>();
         controlGameDisplay.UpdateInventoryUI();
 
-        var message = item.itemName + "を入手した";
-        StartCoroutine(DisplayNews(item, message));
-
         //アイテムを非表示にする
         gameObject.GetComponent<Renderer>().enabled = false;
         gameObject.GetComponent<Collider>().enabled = false;
+        
+        var message = item.itemName + "を入手した";
+        StartCoroutine(DisplayNews(item, message));
+
     }
 
     //レアリティを基準に重み付き確立でアイテムを取得
