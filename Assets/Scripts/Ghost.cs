@@ -15,7 +15,7 @@ public class Ghost : MonoBehaviour
     private bool        isFollowing; //プレイヤー追従フラグ
     private int         mazeSize;
     private float       RouteScale;
-    //
+    private bool        isAudioPlaying = false; // オーディオが再生中かどうか
     
 
     void Start()
@@ -30,6 +30,11 @@ public class Ghost : MonoBehaviour
         //プレイヤーとの距離がfollowDistance以下なら追従
         if (distanceToPlayer <= followDistance){
             isFollowing = true;
+            if(!isAudioPlaying){
+                //プレイヤー追従中はBGMを変更
+                SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Following);
+                isAudioPlaying = true;
+            }
         }
         else{
             isFollowing = false;
@@ -37,6 +42,12 @@ public class Ghost : MonoBehaviour
             //指定した時間が経過したら方向を変更
             if (timer > changeInterval){
                 ChangeDirection();
+            }
+
+            if(isAudioPlaying){
+                //プレイヤー追従中でない場合はBGMを変更
+                SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Main);
+                isAudioPlaying = false;
             }
         }
         MoveObject();

@@ -19,11 +19,13 @@ public class PlayerEvent : MonoBehaviour
     void Start()
     {
         controlGameDisplay = GameObject.FindWithTag("GameDisplayMaster").GetComponent<ControlGameDisplay>();
-
         damageEffectSprite = Resources.Load<Sprite>("DamageSprite");
         NullSprite = Resources.Load<Sprite>("NullSprite");
 
         damageEffectPanel.GetComponent<Image>().sprite = NullSprite;
+
+        //BGM再生
+        SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Main);
     }
 
     //敵と衝突した時の処理
@@ -58,6 +60,7 @@ public class PlayerEvent : MonoBehaviour
             controlGameDisplay.UpdateLifeUI();
 
             //ダメージ
+            SoundManager.Instance.PlaySE(SESoundData.SE.Damage);
             StartCoroutine(DisplayDamageEffect());
 
             //ダメージを再度受けるまでの間隔を設定
