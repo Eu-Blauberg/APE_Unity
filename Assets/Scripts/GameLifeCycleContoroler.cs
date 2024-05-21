@@ -42,8 +42,9 @@ public class GameLifeCycleContoroler : MonoBehaviour
     void Update()
     {
         if(GameObject.Find("Terminal(Clone)") == false) {
-            Restart();
             GenTerminal();
+            Restart();
+            
         }
     }
 

@@ -102,7 +102,9 @@ public class Ghost : MonoBehaviour
     public void SpownSiteDecisionMaker(){
         
     }
-        public int[] Return_xy(){
+
+    public int[] Return_xy()
+    {
 
         int[] initial_xy = new int[2];
 
@@ -111,14 +113,15 @@ public class Ghost : MonoBehaviour
         int initial_y = GiveSmallerThanMaxValue(mazeSize);
 
         //初期位置について，例外を解決
-        if(initial_x <= 2) initial_x += 2;
-        if(initial_x >= mazeSize-2) initial_x -= 2;
-        if(initial_y <= 2) initial_y += 2;
-        if(initial_y >= mazeSize-2) initial_y -= 2;
+        if (initial_x <= 2) initial_x += 2;
+        if (initial_x >= mazeSize - 2) initial_x -= 2;
+        if (initial_y <= 2) initial_y += 2;
+        if (initial_y >= mazeSize - 2) initial_y -= 2;
 
         initial_xy[0] = initial_y;
         initial_xy[1] = initial_x;
         return initial_xy;
+
     }
 
     private int GiveSmallerThanMaxValue(int maxValue){
