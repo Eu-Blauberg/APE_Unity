@@ -10,8 +10,10 @@ public class GameLifeCycleContoroler : MonoBehaviour
     private GameObject      Hero;
     private GameObject      TerminalPrefab;
     private GameObject      HeroPrefab;
+    private GameObject      GhostParent;
     private GameObject      GhostPrefab;
     private GameObject[]    GhostObj = new GameObject[16];
+    private GameObject      BagageParent;
     private GameObject      BagagesPrefab;
     private GameObject[]    BagagesObj = new GameObject[16];
     private MazeCreater     mazeCreater;
@@ -33,8 +35,8 @@ public class GameLifeCycleContoroler : MonoBehaviour
         GenTerminal();
         TerminalStarter();
         mazeCreater.mazeCreate();
-        //GenGhost();
-        //GenBagages();
+        GenGhost();
+        GenBagages();
         character.SetInitialData(mazeCreater.GetInitialSpownCoordinate_x(), mazeCreater.GetInitialSpownCoordinate_y(), mazeCreater.GetRouteScale());
     }
 
@@ -42,8 +44,8 @@ public class GameLifeCycleContoroler : MonoBehaviour
     void Update()
     {
         if(GameObject.Find("Terminal(Clone)") == false) {
-            Restart();
             GenTerminal();
+            Restart();
         }
     }
 
@@ -52,22 +54,25 @@ public class GameLifeCycleContoroler : MonoBehaviour
         Terminal.AddComponent<MazeCreater>();
         mazeCreater = Terminal.GetComponent<MazeCreater>();
         GenCharacter();
-
+        // お化け格納の親要素
+        GhostParent = Instantiate((GameObject)Resources.Load("ghost"));
+        // 鞄格納の親要素
+        BagageParent = Instantiate((GameObject)Resources.Load("bagage"));
     }
 
     private void Restart(){
         character.SwitchActivator(false);
         mazeCreater.MazeReCreate();
-        if(mazeCreater.GetFloorNumber() % 2 != 0) character.SetInitialData(mazeCreater.GetInitialSpownCoordinate_x(), mazeCreater.GetInitialSpownCoordinate_y(), mazeCreater.GetRouteScale());
+        if(mazeCreater.GetFloorNumber() % 2 != 0) {
+            character.SetInitialData(mazeCreater.GetInitialSpownCoordinate_x(), mazeCreater.GetInitialSpownCoordinate_y(), mazeCreater.GetRouteScale());
+            DelBagages();
+            DelGhosts();
+            GenBagages();
+            GenGhost();
+        }
         else character.transform.position = new Vector3(Relay_x, Relay_y, Relay_z);
-        //DelBagages();
-        //DelGhosts();
-        //GenBagages();
-        //GenGhost();
         character.SwitchActivator(true);
     }
-
-    
 
     private void GenTerminal(){
         Debug.Log("Generate Terminal");
@@ -94,6 +99,7 @@ public class GameLifeCycleContoroler : MonoBehaviour
             int[] initial_xy = new int[2];
             initial_xy = mazeCreater.Return_Secure_xy();
             GhostObj[n].transform.position = new Vector3(initial_xy[0]*RouteScale, 1*RouteScale, initial_xy[1]*RouteScale);
+            GhostObj[n].transform.parent = GhostParent.transform;
         }
     }
 
@@ -105,20 +111,21 @@ public class GameLifeCycleContoroler : MonoBehaviour
             int[] initial_xy = new int[2];
             initial_xy = mazeCreater.Return_Secure_xy();
             BagagesObj[n].transform.position = new Vector3(initial_xy[0]*RouteScale, 1*RouteScale, initial_xy[1]*RouteScale);
+            BagagesObj[n].transform.parent = BagageParent.transform;
         }
     }
 
     private void DelBagages(){
         for(int n = 0; n < BagagesObj.ToArray().GetLength(0); n++) {
             Debug.Log(n);
-            BagagesObj[n] = null;
+            Destroy(BagagesObj[n]);
             bagages[n] = null;
         }
     }
 
     private void DelGhosts(){
         for(int n = 0; n < GhostObj.ToArray().GetLength(0); n++) {
-            GhostObj[n] = null;
+            Destroy(GhostObj[n]);
             ghost[n] = null;
         }
     }

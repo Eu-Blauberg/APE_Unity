@@ -319,9 +319,11 @@ public class MazeCreater : MonoBehaviour
             Debug.Log("Remaze");
             MazeInitialize();
             mazeMap = new byte[mazeSize][];
-            byte[] mazeMapEachLen = Enumerable.Repeat<byte>(0,mazeSize).ToArray();
-            for (int i = 0; i < mazeSize; i++) mazeMap[i] = mazeMapEachLen.Clone() as byte[];
-            byte[][] MazeFullyBinaryMap = ReturnVirtualBinaryMap(mazeMap);
+            byte[] NewmazeMapEachLen = Enumerable.Repeat<byte>(0,mazeSize).ToArray();
+            for (int i = 0; i < mazeSize; i++) mazeMap[i] = NewmazeMapEachLen.Clone() as byte[];
+            byte[][] NewMazeFullyBinaryMap = ReturnVirtualBinaryMap(mazeMap);
+            Array.Clear(MazeFullyBinaryMap, 0, mazeSize-2);
+            MazeFullyBinaryMap = NewMazeFullyBinaryMap;
             // 迷路の初期化処理を終了
             Fix3DMaze(MazeFullyBinaryMap);
             Debug.Log("MazeRecreate is completed");
