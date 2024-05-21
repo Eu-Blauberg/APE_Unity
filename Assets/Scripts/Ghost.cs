@@ -20,6 +20,8 @@ public class Ghost : MonoBehaviour
 
     void Start()
     {
+        player = GameObject.FindWithTag("Player");
+        
         ChangeDirection();
     }
 
