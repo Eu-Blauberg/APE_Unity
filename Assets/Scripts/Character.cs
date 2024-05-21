@@ -38,7 +38,7 @@ public class Character : MonoBehaviour
         }
     }
     
-    public void SetInitialData(int initial_y, int initial_x, float RouteScale){
+    public void SetInitialData(int initial_x, int initial_y, float RouteScale){
         this.initial_x = initial_x;
         this.initial_y = initial_y;
         this.RouteScale = RouteScale;

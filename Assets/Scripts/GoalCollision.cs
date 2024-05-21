@@ -25,8 +25,6 @@ public class GoalCollision : MonoBehaviour
     void OnCollisionEnter(Collision collision){
         if(collision.gameObject.name == "Character(Clone)"){
             Debug.Log("collision Here!!");
-            // prepare UI to make Decision about forward or not !!
-            // END OF UI CONFIG
             if(Terminal == true) Destroy(Terminal);
         }
     }

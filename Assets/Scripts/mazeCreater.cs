@@ -71,14 +71,20 @@ public class MazeCreater : MonoBehaviour
         initial_y = initial_xy[0];
         initial_x = initial_xy[1];
 
+        Debug.Log("Create Maze-GoalDecide mainbody... Start");
         // ゴール地点の決定と導入
         while(true){
             int[] Goal_xy = Return_xy();
-            if(initial_x == goal_x || initial_y == goal_y) continue;
             goal_y = Goal_xy[0];
             goal_x = Goal_xy[1];
+            if(initial_x == goal_x && initial_y == goal_y) {
+                Debug.Log("一致しているためゴールが決定しない -> continue");
+                continue;
+            }
+            Debug.Log("ゴールが決定したため抜けます -> break");
             break;
         }
+        Debug.Log("Create Maze-GoalDecide mainbody... End");
 
         // 引数のMAPをこの関数内で保持するためのコピーを生成
         byte[][] mazeBinaryMap = mazeEmptyMap.Clone() as byte[][];
@@ -90,6 +96,7 @@ public class MazeCreater : MonoBehaviour
         int digingYcell = initial_y;
         int digingXcell = initial_x;
 
+        Debug.Log("Create Maze mainbody... Start");
         while(RouteAchiveTimes < mazeSize*mazeSize*5){
             RouteTryTimes++;
             direction = GiveSmallerThanMaxValue(4);
@@ -143,7 +150,9 @@ public class MazeCreater : MonoBehaviour
                 break;
             }
         }
+        Debug.Log("Create Maze mainbody... End");
 
+        Debug.Log("Create Maze-Loop mainbody... Start");
         // 迷路にループ構造を生成
         while(mazeSize/LoopMakerKey > MakeLoopingPointTimes){
             LoopingCandicate_xy = Return_xy();
@@ -153,6 +162,7 @@ public class MazeCreater : MonoBehaviour
             mazeBinaryMap[digingYcell][digingXcell] = 1;
             MakeLoopingPointTimes++;
         }
+        Debug.Log("Create Maze-Loop mainbody... End");
 
         // ゴール地点を生成
         for(int i = -1; i < 2; i++){
@@ -233,7 +243,7 @@ public class MazeCreater : MonoBehaviour
         GameObject wall;
         GameObject floor;
         GameObject Stair;
-        GameObject bakedfloor;
+        //GameObject bakedfloor;
         GameObject GoalJudgeSpace;
         // ブロックのロード
         GameObject wallPrefab = (GameObject)Resources.Load("WallCube");
@@ -242,7 +252,7 @@ public class MazeCreater : MonoBehaviour
         GameObject BakedFloorPrefab = (GameObject)Resources.Load("FloorCube");
 
         GameObject GoalJudgeSpacePrefab = (GameObject)Resources.Load("Goaljudgement");
-        bakedfloor = Instantiate(BakedFloorPrefab);
+        //bakedfloor = Instantiate(BakedFloorPrefab);
 
         //bakedfloor.transform.position
 
@@ -260,22 +270,26 @@ public class MazeCreater : MonoBehaviour
                     GoalJudgeSpace.transform.position = new Vector3(m*RouteScale, 1*RouteScale, n*RouteScale);
                     GoalJudgeSpace.transform.localScale = new Vector3(RouteScale,RouteScale,RouteScale);
                     GoalJudgeSpace.transform.parent = StairBlock.transform;
-                    continue;
+                    
                 }
-                // 壁の設置を行うのは，BinaryMapが0の時だけ
-                if(mazeFullyBinaryMap[m][n] == 0){
-                    wall = Instantiate(wallPrefab);
-                    wall.transform.position = new Vector3(m*RouteScale, 1*RouteScale, n*RouteScale);
-                    wall.transform.localScale = new Vector3(RouteScale,RouteScale,RouteScale);
-                    wall.transform.parent = WallBlock.transform;
-                }
-                // 床の設置を行うのは，BinaryMapが1の時だけ
+                // 迷路の道を生成
                 else{
-                    floor = Instantiate(FloorPrefab);
-                    floor.transform.position = new Vector3(m*RouteScale, 0, n*RouteScale);
-                    floor.transform.localScale = new Vector3(RouteScale,RouteScale,RouteScale);
-                    floor.transform.parent = FloorBlock.transform;
+                    // 壁の設置を行うのは，BinaryMapが0の時だけ
+                    if(mazeFullyBinaryMap[m][n] == 0){
+                        wall = Instantiate(wallPrefab);
+                        wall.transform.position = new Vector3(m*RouteScale, 1*RouteScale, n*RouteScale);
+                        wall.transform.localScale = new Vector3(RouteScale,RouteScale,RouteScale);
+                        wall.transform.parent = WallBlock.transform;
+                    }
+                    // 床の設置を行うのは，BinaryMapが1の時だけ
+                    else{
+                        floor = Instantiate(FloorPrefab);
+                        floor.transform.position = new Vector3(m*RouteScale, 0, n*RouteScale);
+                        floor.transform.localScale = new Vector3(RouteScale,RouteScale,RouteScale);
+                        floor.transform.parent = FloorBlock.transform;
+                    }
                 }
+
             }
         }
     }
@@ -296,6 +310,7 @@ public class MazeCreater : MonoBehaviour
     
     
     public void MazeReCreate(){
+        Debug.Log("MazeRecreate is running");
         Debug.Log(floorNumber);
         // 迷路の初期化処理を開始
         MazeParamsUpdater();
@@ -309,8 +324,9 @@ public class MazeCreater : MonoBehaviour
             byte[][] MazeFullyBinaryMap = ReturnVirtualBinaryMap(mazeMap);
             // 迷路の初期化処理を終了
             Fix3DMaze(MazeFullyBinaryMap);
+            Debug.Log("MazeRecreate is completed");
         }
-
+        else Debug.Log("No Create phase...");
     }
 
     public int GetInitialSpownCoordinate_x(){
