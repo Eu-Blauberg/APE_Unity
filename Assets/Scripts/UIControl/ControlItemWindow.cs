@@ -70,6 +70,7 @@ public class ControlItemWindow : MonoBehaviour
     }
 
     private void OnRightPerformed(InputAction.CallbackContext context){
+        SoundManager.Instance.PlaySE(SESoundData.SE.Cursor);
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         if(isDown) return; //戻るボタン選択中なら処理を抜ける
         Debug.Log("Right");
@@ -87,6 +88,7 @@ public class ControlItemWindow : MonoBehaviour
     }
 
     private void OnLeftPerformed(InputAction.CallbackContext context){
+        SoundManager.Instance.PlaySE(SESoundData.SE.Cursor);
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         if(isDown) return; //戻るボタン選択中なら処理を抜ける
         Debug.Log("Left");
@@ -104,6 +106,7 @@ public class ControlItemWindow : MonoBehaviour
     }
         
     private void OnDownPerformed(InputAction.CallbackContext context){
+        SoundManager.Instance.PlaySE(SESoundData.SE.Cursor);
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         Debug.Log("Down");
 
@@ -113,6 +116,7 @@ public class ControlItemWindow : MonoBehaviour
     }
 
     private void OnUpPerformed(InputAction.CallbackContext context){
+        SoundManager.Instance.PlaySE(SESoundData.SE.Cursor);
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         Debug.Log("Up");
 
@@ -122,6 +126,7 @@ public class ControlItemWindow : MonoBehaviour
     }
 
     private void OnClickPerformed(InputAction.CallbackContext context){
+        SoundManager.Instance.PlaySE(SESoundData.SE.Click);
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         if(!isDown) return; //戻るボタン選択中でない場合は処理を抜ける
 

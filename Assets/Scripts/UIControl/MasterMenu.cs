@@ -30,6 +30,7 @@ public class MasterMenu: MonoBehaviour
         Debug.Log("CloseMainMenu");
         MenuCanvas.SetActive(false);
         Time.timeScale = 1;
+        SoundManager.Instance.PlaySE(SESoundData.SE.Menu);
     }
 
     public void OpenOptionMenu()
@@ -38,6 +39,7 @@ public class MasterMenu: MonoBehaviour
         MainMenuWindow.SetActive(false);
         OptionMenuWindow.SetActive(true);
         ItemMenuWindow.SetActive(false);
+        SoundManager.Instance.PlaySE(SESoundData.SE.Menu);
     }
 
     public void CloseOptionMenu()
@@ -46,6 +48,7 @@ public class MasterMenu: MonoBehaviour
         OptionMenuWindow.SetActive(false);
         MainMenuWindow.SetActive(true);
         ItemMenuWindow.SetActive(false);
+        SoundManager.Instance.PlaySE(SESoundData.SE.Menu);
     }
 
     public void OpenItemMenu()
@@ -54,6 +57,7 @@ public class MasterMenu: MonoBehaviour
         MainMenuWindow.SetActive(false);
         OptionMenuWindow.SetActive(false);
         ItemMenuWindow.SetActive(true);
+        SoundManager.Instance.PlaySE(SESoundData.SE.Menu);
     }
 
     public void CloseItemMenu()
@@ -62,5 +66,6 @@ public class MasterMenu: MonoBehaviour
         MainMenuWindow.SetActive(true);
         OptionMenuWindow.SetActive(false);
         ItemMenuWindow.SetActive(false);
+        SoundManager.Instance.PlaySE(SESoundData.SE.Menu);
     }
 }

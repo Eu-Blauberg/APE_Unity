@@ -42,6 +42,7 @@ public class OpenMenu : MonoBehaviour
             GameObject instantedMenuCanvas = Instantiate(menuCanvas);
             instantedMenuCanvas.name = "MenuCanvas";
             _gameObject = instantedMenuCanvas;
+            SoundManager.Instance.PlaySE(SESoundData.SE.Menu);
             Debug.Log("Instante " + instantedMenuCanvas.name);
             Time.timeScale = 0;
         }

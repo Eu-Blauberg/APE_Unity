@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2300897716878227764}
   - component: {fileID: 4493222093699950156}
   - component: {fileID: 5412360107063198105}
-  - component: {fileID: 1066996557600399972}
   m_Layer: 3
   m_Name: LittleGostIcon
   m_TagString: Untagged
@@ -84,19 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &1066996557600399972
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1709615766935860745}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2244811111895991122
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,7 +507,7 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.145118
-  m_Height: 0.73960495
+  m_Height: 1.04
   m_Direction: 1
   m_Center: {x: -0.0075883865, y: 0.33836842, z: 0.00768137}
 --- !u!1 &2244811112575703262

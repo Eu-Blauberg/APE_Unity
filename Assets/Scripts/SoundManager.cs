@@ -72,6 +72,7 @@ public class SESoundData
         Walk,
         Dash,
         Damage,
+        Menu,
         Click,
         Cursor,
         Other,
