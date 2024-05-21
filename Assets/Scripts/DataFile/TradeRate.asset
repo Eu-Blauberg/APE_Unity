@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2e30ed3dc88d4025ba1b24d6e747022, type: 3}
+  m_Name: TradeRate
+  m_EditorClassIdentifier: 
+  tradeRates:
+  - SellItem: {fileID: 11400000, guid: f248b08156b714f569ce99f626d24760, type: 2}
+    SellNum: 4
+    BuyItem: {fileID: 11400000, guid: ccee29b7551214b768438ddfc6c8f9e9, type: 2}
+    BuyNum: 1
+  - SellItem: {fileID: 11400000, guid: 70b781e6ab8ae4300b7bd61b0810dc6f, type: 2}
+    SellNum: 2
+    BuyItem: {fileID: 11400000, guid: ccee29b7551214b768438ddfc6c8f9e9, type: 2}
+    BuyNum: 1
+  - SellItem: {fileID: 11400000, guid: 70b781e6ab8ae4300b7bd61b0810dc6f, type: 2}
+    SellNum: 1
+    BuyItem: {fileID: 11400000, guid: f248b08156b714f569ce99f626d24760, type: 2}
+    BuyNum: 2
+  - SellItem: {fileID: 11400000, guid: f248b08156b714f569ce99f626d24760, type: 2}
+    SellNum: 2
+    BuyItem: {fileID: 11400000, guid: 70b781e6ab8ae4300b7bd61b0810dc6f, type: 2}
+    BuyNum: 1

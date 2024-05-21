@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/mazeCreater.cs.meta
+guid: d02bc8154bd551e42ba6df9081cf0b5c
+========
+guid: efa076bca78414049a8aeee0eb04cc19
+>>>>>>>> origin/atsuki:Assets/Scripts/PlayerMove.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

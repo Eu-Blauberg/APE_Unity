@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/characterGenerate.cs.meta
+guid: 525e519290dea7f44965a572e1cbe401
+========
+guid: a04b1e17563584700a6359ed44197308
+>>>>>>>> origin/atsuki:Assets/Scripts/PlayerLook.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

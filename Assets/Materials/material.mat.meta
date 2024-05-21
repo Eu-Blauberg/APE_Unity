@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Resources/material.mat.meta
+guid: 266a8e19a933e654882fdc3b15e553e2
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+========
+guid: c9aa4f16df5e51f469e95bd79b96b508
+folderAsset: yes
+timeCreated: 1474812050
+licenseType: Store
+DefaultImporter:
+>>>>>>>> origin/atsuki:Assets/ChestFree/Textures.meta
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
