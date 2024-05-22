@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5098530336714175153}
   - component: {fileID: 5029358641976414469}
   - component: {fileID: 8367927060859542486}
+  - component: {fileID: -1243132021140415006}
   m_Layer: 0
   m_Name: Bag.2_White
   m_TagString: Item
@@ -111,3 +112,19 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1.3304543
   m_Center: {x: 0.32338342, y: -0.7668009, z: 0.09030151}
+--- !u!54 &-1243132021140415006
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6844706582772876909}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
