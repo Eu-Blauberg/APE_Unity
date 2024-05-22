@@ -71,4 +71,11 @@ public class ItemDataBase : ScriptableObject
     {
         return items.Find(item => item.itemName == itemName);
     }
+
+public void CleanItem(){
+    foreach(Item item in items){
+       item.num = 0;
+    }
 }
+}
+ 

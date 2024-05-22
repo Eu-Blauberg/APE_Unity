@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 public class SceneControl : MonoBehaviour
 {
 
+    [SerializeField] ItemDataBase itemDataBase;
+
     private InputAction _pressAnyKeyAction = new InputAction(type: InputActionType.PassThrough, binding: "*/<Button>", interactions: "Press");
 
     private void OnEnable() => _pressAnyKeyAction.Enable();
@@ -16,6 +18,8 @@ public class SceneControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        itemDataBase.CleanItem();
+        
         if (SceneManager.GetActiveScene().name == "GameTitle")
         {
             SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Title);

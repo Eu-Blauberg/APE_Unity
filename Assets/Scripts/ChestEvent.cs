@@ -9,7 +9,7 @@ public class ChestEvent : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            SceneManager.LoadScene("ClearScene");
+            SceneManager.LoadScene("GameClear");
         }
     }
 }

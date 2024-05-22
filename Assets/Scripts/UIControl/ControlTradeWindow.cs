@@ -176,7 +176,7 @@ public class ControlTradeWindow: MonoBehaviour
                 Time.timeScale = 1.0f;
                 break;
             case 1:
-                if(CanTradeItem() == true) TradeTtem(); //アイテムを買う
+                if(CanTradeItem() == true) TradeItem(); //アイテムを買う
 
                 if(CanTradeItem() == false) 
                 {
@@ -188,7 +188,9 @@ public class ControlTradeWindow: MonoBehaviour
 
                 //アイテムの情報を更新
                 UpdateMenuWindow(currentMenuIndex);
-
+                
+                ControlGameDisplay controlGameDisplay = GameObject.FindWithTag("GameDisplayMaster").GetComponent<ControlGameDisplay>();
+                controlGameDisplay.UpdateInventoryUI();
                 break;
         }
     }
@@ -222,7 +224,7 @@ public class ControlTradeWindow: MonoBehaviour
     }
 
     //アイテムを売買する
-    private void TradeTtem()
+    private void TradeItem()
     {
         var nowInventryItemNum = itemDataBase.GetItemNum(tradeRate.tradeRates[currentMenuIndex].SellItem);
         //売るアイテムの数が0の場合は処理を抜ける

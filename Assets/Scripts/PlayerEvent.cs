@@ -39,16 +39,16 @@ public class PlayerEvent : MonoBehaviour
         if (!collider.gameObject.CompareTag("Enemy")) return;
 
 
-        if(itemDataBase.GetItemNum(itemDataBase.GetItemByName("バリア")) > 0)
+        if(itemDataBase.GetItemNum(itemDataBase.GetItemByName("ガコンの首飾り")) > 0)
         {
             //シールドを持っている場合
             //シールドを削除
-            itemDataBase.RemoveItem(itemDataBase.GetItemByName("バリア"));
+            itemDataBase.RemoveItem(itemDataBase.GetItemByName("ガコンの首飾り"));
             //インベントリUIを更新
             controlGameDisplay.UpdateInventoryUI();
 
             //テキスト表示
-            StartCoroutine(DisplayNoticeText("バリアを使った"));
+            StartCoroutine(DisplayNoticeText("ガコンの首飾りを使った"));
 
             //ダメージを再度受けるまでの間隔を設定
             StartCoroutine(DamageInterval());

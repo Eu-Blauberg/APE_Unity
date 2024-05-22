@@ -20,8 +20,8 @@ public class GameLifeCycleContoroler : MonoBehaviour
     private Character       character;
     private Ghost[]         ghost = new Ghost[16];
     private Bagages[]       bagages = new Bagages[16];      
-    private const int       Goal_x = -48;
-    private const int       Goal_y = -10;
+    private const int       Goal_x = -50;
+    private const int       Goal_y = -13;
     private const int       Goal_z = 0;
     private const int       Relay_x = -50;
     private const int       Relay_y = -2;
@@ -63,15 +63,20 @@ public class GameLifeCycleContoroler : MonoBehaviour
     private void Restart(){
         character.SwitchActivator(false);
         mazeCreater.MazeReCreate();
-        if(mazeCreater.GetFloorNumber() % 2 != 0) {
-            character.SetInitialData(mazeCreater.GetInitialSpownCoordinate_x(), mazeCreater.GetInitialSpownCoordinate_y(), mazeCreater.GetRouteScale());
-            DelBagages();
-            DelGhosts();
-            GenBagages();
-            GenGhost();
+        if(mazeCreater.GetFloorNumber() == 8) {
+            character.transform.position = new Vector3(Goal_x, Goal_y, Goal_z);
         }
-        else character.transform.position = new Vector3(Relay_x, Relay_y, Relay_z);
-        character.SwitchActivator(true);
+        else{
+            if(mazeCreater.GetFloorNumber() % 2 != 0) {
+                character.SetInitialData(mazeCreater.GetInitialSpownCoordinate_x(), mazeCreater.GetInitialSpownCoordinate_y(), mazeCreater.GetRouteScale());
+                DelBagages();
+                DelGhosts();
+                GenBagages();
+                GenGhost();
+            }
+            else character.transform.position = new Vector3(Relay_x, Relay_y, Relay_z);        
+        }
+        character.SwitchActivator(true);    
     }
 
     private void GenTerminal(){
@@ -117,7 +122,7 @@ public class GameLifeCycleContoroler : MonoBehaviour
 
     private void DelBagages(){
         for(int n = 0; n < BagagesObj.ToArray().GetLength(0); n++) {
-            Debug.Log(n);
+            //Debug.Log(n);
             Destroy(BagagesObj[n]);
             bagages[n] = null;
         }

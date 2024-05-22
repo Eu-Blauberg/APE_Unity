@@ -8,6 +8,8 @@ public class ControlCompass : MonoBehaviour
     private Transform target;
     private Transform player;
 
+    private int UpdateCount = 0;
+
     private Vector3 targetDir;
     private GameObject CompassAllow;
     private bool isCompass = false;
@@ -36,13 +38,25 @@ public class ControlCompass : MonoBehaviour
             }
         }else return;
 
-        // ターゲットの方向を取得
-        targetDir = target.position - player.position;
-        // ターゲットの方向を正規化(単位ベクトルに変換)
-        targetDir.Normalize();
+        if(player != null && target != null){
+            // ターゲットの方向を取得
+            targetDir = target.position - player.position;
+            // ターゲットの方向を正規化(単位ベクトルに変換)
+            targetDir.Normalize();
+        }
+        else{
+            if(UpdateCount > 30){
+                target = GameObject.FindWithTag("Goal").GetComponent<Transform>();
+                player = GameObject.FindWithTag("Player").GetComponent<Transform>();
+                UpdateCount = 0;
+            }
+        }
+
 
         //オブジェクトを回転させる
         float angle = Mathf.Atan2(targetDir.x, targetDir.z) * Mathf.Rad2Deg;
         this.transform.rotation = Quaternion.Euler(0, angle, 0);
+
+        UpdateCount++;
     }
 }
