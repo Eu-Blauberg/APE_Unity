@@ -70,7 +70,7 @@ public class ControlOptionMenu : MonoBehaviour
                         playerData.sensivity = SensiSlider.value;
                         break;
                     case 1:
-                        VolSlider.value += 0.1f;
+                        VolSlider.value += 0.01f;
                         AudioListener.volume = VolSlider.value;
                         break;
                     case 2:
@@ -92,7 +92,7 @@ public class ControlOptionMenu : MonoBehaviour
                         playerData.sensivity = SensiSlider.value;
                         break;
                     case 1:
-                        VolSlider.value -= 0.1f;
+                        VolSlider.value -= 0.01f;
                         AudioListener.volume = VolSlider.value;
                         break;
                     case 2:
