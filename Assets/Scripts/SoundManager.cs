@@ -55,6 +55,9 @@ public class BGMSoundData
     {
         Main,
         Following,
+        Title,
+        GameOver,
+        GameClear,
         Other,
     }
 

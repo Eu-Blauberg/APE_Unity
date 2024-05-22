@@ -16,7 +16,25 @@ public class SceneControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (SceneManager.GetActiveScene().name == "GameTitle")
+        {
+            SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Title);
+        }
 
+        if (SceneManager.GetActiveScene().name == "MazeCreateScene")
+        {
+            SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Main);
+        }
+
+        if (SceneManager.GetActiveScene().name == "GameOver")
+        {
+            SoundManager.Instance.PlayBGM(BGMSoundData.BGM.GameOver);
+        }
+
+        if (SceneManager.GetActiveScene().name == "GameClear")
+        {
+            SoundManager.Instance.PlayBGM(BGMSoundData.BGM.GameClear);
+        }
     }
 
     // Update is called once per frame
