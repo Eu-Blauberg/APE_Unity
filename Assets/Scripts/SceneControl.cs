@@ -33,7 +33,7 @@ public class SceneControl : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "GameClear")
         {
-            SoundManager.Instance.PlayBGM(BGMSoundData.BGM.GameClear);
+            SoundManager.Instance.PlaySE(SESoundData.SE.GameClear);
         }
     }
 

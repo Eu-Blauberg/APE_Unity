@@ -57,7 +57,6 @@ public class BGMSoundData
         Following,
         Title,
         GameOver,
-        GameClear,
         Other,
     }
 
@@ -78,6 +77,7 @@ public class SESoundData
         Menu,
         Click,
         Cursor,
+        GameClear,
         Other,
     }
 
