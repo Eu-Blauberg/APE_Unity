@@ -48,6 +48,7 @@ public class ControlMainMenu : MonoBehaviour
 
 
     private void OnDownPerformed(InputAction.CallbackContext context){
+        SoundManager.Instance.PlaySE(SESoundData.SE.Cursor);
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         Debug.Log("Down");
 
@@ -59,6 +60,7 @@ public class ControlMainMenu : MonoBehaviour
     }
 
     private void OnUpPerformed(InputAction.CallbackContext context){
+        SoundManager.Instance.PlaySE(SESoundData.SE.Cursor);
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         Debug.Log("Up");
         
@@ -70,6 +72,7 @@ public class ControlMainMenu : MonoBehaviour
     }
 
     private void OnClickPerformed(InputAction.CallbackContext context){
+        SoundManager.Instance.PlaySE(SESoundData.SE.Click);
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         Debug.Log("Click");
 

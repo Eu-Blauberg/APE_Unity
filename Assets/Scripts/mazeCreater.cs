@@ -249,7 +249,7 @@ public class MazeCreater : MonoBehaviour
         GameObject wallPrefab = (GameObject)Resources.Load("WallCube");
         GameObject FloorPrefab = (GameObject)Resources.Load("FloorCube");
         GameObject StairPrefab = (GameObject)Resources.Load("BelowStair");
-        GameObject BakedFloorPrefab = (GameObject)Resources.Load("FloorCube");
+        //GameObject BakedFloorPrefab = (GameObject)Resources.Load("FloorCube");
 
         GameObject GoalJudgeSpacePrefab = (GameObject)Resources.Load("Goaljudgement");
         //bakedfloor = Instantiate(BakedFloorPrefab);

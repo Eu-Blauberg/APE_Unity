@@ -86,6 +86,7 @@ public class ControlTradeWindow: MonoBehaviour
     }
 
     private void OnRightPerformed(InputAction.CallbackContext context){
+        SoundManager.Instance.PlaySE(SESoundData.SE.Cursor);
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         if(isDown){
             //選択肢の右移動(アイテムが売買できない場合はcurrentOptionIndexが0のままになる)
@@ -112,6 +113,7 @@ public class ControlTradeWindow: MonoBehaviour
     }
 
     private void OnLeftPerformed(InputAction.CallbackContext context){
+        SoundManager.Instance.PlaySE(SESoundData.SE.Cursor);
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         if(isDown){
             //選択肢の左移動(アイテムが売買できない場合はcurrentOptionIndexが0のままになる)
@@ -137,6 +139,7 @@ public class ControlTradeWindow: MonoBehaviour
     }
         
     private void OnDownPerformed(InputAction.CallbackContext context){
+        SoundManager.Instance.PlaySE(SESoundData.SE.Cursor);
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         Debug.Log("Down");
 
@@ -146,6 +149,7 @@ public class ControlTradeWindow: MonoBehaviour
     }
 
     private void OnUpPerformed(InputAction.CallbackContext context){
+        SoundManager.Instance.PlaySE(SESoundData.SE.Cursor);
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         Debug.Log("Up");
 
@@ -156,6 +160,7 @@ public class ControlTradeWindow: MonoBehaviour
     }
 
     private void OnClickPerformed(InputAction.CallbackContext context){
+        SoundManager.Instance.PlaySE(SESoundData.SE.Click);
         if(gameObject.activeInHierarchy == false) return; //自身がヒエラルキー上で非アクティブなら処理を抜ける
         if(!isDown) return; //戻るボタン選択中でない場合は処理を抜ける
 
@@ -171,8 +176,7 @@ public class ControlTradeWindow: MonoBehaviour
                 Time.timeScale = 1.0f;
                 break;
             case 1:
-                if(CanTradeItem() == false) break;
-                else TradeTtem(); //アイテムを買う
+                if(CanTradeItem() == true) TradeTtem(); //アイテムを買う
 
                 if(CanTradeItem() == false) 
                 {

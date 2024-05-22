@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerEvent : MonoBehaviour
 {
@@ -29,13 +30,14 @@ public class PlayerEvent : MonoBehaviour
     }
 
     //敵と衝突した時の処理
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collider)
     {    
         //ダメージを受ける感覚がある場合は処理を終了
         if (isDamageTime) return;
 
         //衝突したオブジェクトが敵でない場合は処理を終了
-        if (!collision.gameObject.CompareTag("Enemy")) return;
+        if (!collider.gameObject.CompareTag("Enemy")) return;
+
 
         if(itemDataBase.GetItemNum(itemDataBase.GetItemByName("バリア")) > 0)
         {
@@ -69,9 +71,8 @@ public class PlayerEvent : MonoBehaviour
             //プレイヤーのライフが0以下の場合
             if (playerData.life <= 0)
             {
-                /*
-                ゲームオーバー処理
-                */
+                //シーン遷移
+                SceneManager.LoadScene("GameOver");
             }
         }
     }

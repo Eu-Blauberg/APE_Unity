@@ -55,6 +55,8 @@ public class BGMSoundData
     {
         Main,
         Following,
+        Title,
+        GameOver,
         Other,
     }
 
@@ -72,8 +74,10 @@ public class SESoundData
         Walk,
         Dash,
         Damage,
+        Menu,
         Click,
         Cursor,
+        GameClear,
         Other,
     }
 
