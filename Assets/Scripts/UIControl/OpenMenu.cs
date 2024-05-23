@@ -9,18 +9,30 @@ public class OpenMenu : MonoBehaviour
     public GameObject menuCanvas; // メニューキャンバス
     private InputAction menuAction; // 視点移動用のアクション
     private GameObject _gameObject; // メニューキャンバスのオブジェクト
+
+    private GameInputs gameInputs;
+
+
     void Awake()
     {
-        var actionMap = inputActionAsset.FindActionMap("PlayerControls");
-        menuAction = actionMap.FindAction("Menu");
-        menuAction.Enable();
-        menuAction.performed += OnMenuPerformed;
+        gameInputs = new GameInputs();
+        if(gameInputs == null) Debug.Log("GameInputs is null");
+
+        gameInputs.PlayerControls.Menu.performed += OnMenuPerformed;
+
+        gameInputs.Enable();
 
         _gameObject = GameObject.Find("MenuCanvas");
     }
 
+    private void OnDestroy()
+    {
+        gameInputs?.Dispose();
+    }
+
     private void OnMenuPerformed(InputAction.CallbackContext context)
     {
+        Debug.Log("OnMenuPerformed");
         if (_gameObject != null)
         {
             if(_gameObject.activeInHierarchy == false)
@@ -41,9 +53,10 @@ public class OpenMenu : MonoBehaviour
             // メニューを開く
             GameObject instantedMenuCanvas = Instantiate(menuCanvas);
             instantedMenuCanvas.name = "MenuCanvas";
+            Debug.Log("メニューインスタンスを生成");
             _gameObject = instantedMenuCanvas;
+
             SoundManager.Instance.PlaySE(SESoundData.SE.Menu);
-            Debug.Log("Instante " + instantedMenuCanvas.name);
             Time.timeScale = 0;
         }
         

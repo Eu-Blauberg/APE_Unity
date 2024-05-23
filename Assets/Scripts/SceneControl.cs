@@ -14,28 +14,26 @@ public class SceneControl : MonoBehaviour
     private void OnEnable() => _pressAnyKeyAction.Enable();
     private void OnDisable() => _pressAnyKeyAction.Disable();
 
-
-    // Start is called before the first frame update
-    void Start()
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        itemDataBase.CleanItem();
-        
-        if (SceneManager.GetActiveScene().name == "GameTitle")
+        Debug.Log(scene.buildIndex);
+
+        if (scene.name == "GameTitle")
         {
             SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Title);
         }
 
-        if (SceneManager.GetActiveScene().name == "MazeCreateScene")
+        if (scene.name == "MazeCreateScene")
         {
             SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Main);
         }
 
-        if (SceneManager.GetActiveScene().name == "GameOver")
+        if (scene.name == "GameOver")
         {
             SoundManager.Instance.PlayBGM(BGMSoundData.BGM.GameOver);
         }
 
-        if (SceneManager.GetActiveScene().name == "GameClear")
+        if (scene.name == "GameClear")
         {
             SoundManager.Instance.PlaySE(SESoundData.SE.GameClear);
         }

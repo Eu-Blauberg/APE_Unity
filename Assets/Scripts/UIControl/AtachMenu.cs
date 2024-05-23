@@ -9,7 +9,6 @@ public class AtachMenu : MonoBehaviour
     private GameObject MainMenuWindow;
     private GameObject OptionMenuWindow;
     private GameObject ItemMenuWindow;
-    private MasterMenu masterMenu;
 
     void OnEnable()
     {
@@ -18,7 +17,7 @@ public class AtachMenu : MonoBehaviour
         OptionMenuWindow = MenuCanvas.transform.Find("OptionMenu").gameObject;
         ItemMenuWindow = MenuCanvas.transform.Find("ItemMenu").gameObject;
 
-        masterMenu = new MasterMenu();
+        MasterMenu masterMenu = GameObject.Find("MasterMenu").GetComponent<MasterMenu>();
         masterMenu.AtachGameObject(MenuCanvas, MainMenuWindow, OptionMenuWindow, ItemMenuWindow);
         masterMenu.Initialization();
     }
