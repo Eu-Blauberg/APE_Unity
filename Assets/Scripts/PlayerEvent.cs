@@ -72,6 +72,7 @@ public class PlayerEvent : MonoBehaviour
             if (playerData.life <= 0)
             {
                 itemDataBase.ClearItemNum();
+                SoundManager.Instance.StopBGM();
                 //シーン遷移
                 SceneManager.LoadScene("GameOver");
             }

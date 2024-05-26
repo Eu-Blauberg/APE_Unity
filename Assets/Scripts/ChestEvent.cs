@@ -9,6 +9,7 @@ public class ChestEvent : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            SoundManager.Instance.StopBGM();
             SceneManager.LoadScene("GameClear");
         }
     }

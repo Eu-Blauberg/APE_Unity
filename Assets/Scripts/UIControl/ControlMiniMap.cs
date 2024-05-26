@@ -13,6 +13,7 @@ public class ControlMiniMap : MonoBehaviour
 
     private GameInputs gameInputs;
     private ControlGameDisplay controlGameDisplay;
+    private bool isItemUsed = false;
 
     void Start()
     {
@@ -32,6 +33,7 @@ public class ControlMiniMap : MonoBehaviour
 
         if(itemDataBase.GetItemNum(itemDataBase.GetItemByName("千里眼の薬")) > 0)
         {
+            if(isItemUsed) return;
             itemDataBase.RemoveItem(itemDataBase.GetItemByName("千里眼の薬"));
             controlGameDisplay.UpdateInventoryUI();
             StartCoroutine(DisplayNoticeText("千里眼の薬を使った"));
@@ -43,6 +45,7 @@ public class ControlMiniMap : MonoBehaviour
     //カメラの有効視野を広げる
     private IEnumerator ExpandFieldOfView()
     {
+        isItemUsed = true;
         //カメラの有効視野を広げる
         miniMapCamera.fieldOfView = 90;
 
@@ -51,6 +54,7 @@ public class ControlMiniMap : MonoBehaviour
 
         //カメラの有効視野を元に戻す
         miniMapCamera.fieldOfView = 60;
+        isItemUsed = false;
     }
 
     //アイテムを使った時のテキスト表示
