@@ -139,6 +139,16 @@ public class ControlItemWindow : MonoBehaviour
     //アイテムウィンドウの情報を更新する
     private void UpdateItemWindow(int index)
     {
+        //アイテムがない場合は処理を抜ける
+        if(itemDataBase.items[index].num == 0) 
+        {
+            itemImage.sprite = null;
+            itemName.text = "";
+            itemDescription.text = "何もアイテムを所持していない";
+            isDown = true;
+            return;
+        }
+
         //アイテムウィンドウの各要素を更新
         itemImage.sprite = itemDataBase.items[index].icon;
         itemName.text = itemDataBase.items[index].itemName;

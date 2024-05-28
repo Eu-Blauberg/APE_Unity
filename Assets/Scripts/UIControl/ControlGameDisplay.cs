@@ -16,13 +16,11 @@ public class ControlGameDisplay : MonoBehaviour
 
     void Start()
     {
-        UpdateLifeUI();
-        UpdateInventoryUI();
-
         playerData.life = 3;
 
         // プレイヤーのライフを更新
         UpdateLifeUI();
+        UpdateInventoryUI();
     }
     
     //ライフUIの更新

@@ -71,6 +71,8 @@ public class PlayerEvent : MonoBehaviour
             //プレイヤーのライフが0以下の場合
             if (playerData.life <= 0)
             {
+                itemDataBase.ClearItemNum();
+                SoundManager.Instance.StopBGM();
                 //シーン遷移
                 SceneManager.LoadScene("GameOver");
             }

@@ -9,6 +9,11 @@ public class MasterMenu: MonoBehaviour
     [SerializeField] GameObject OptionMenuWindow;
     [SerializeField] GameObject ItemMenuWindow;
 
+    private void OnEnable()
+    {
+        Initialization();
+    }
+
     public void AtachGameObject(GameObject menuCanvas, GameObject mainMenuWindow, GameObject optionMenuWindow, GameObject itemMenuWindow)
     {
         Debug.Log("AtachGameObject");
